@@ -1,3 +1,7 @@
+# 0.9.20
+
+- Update physical ranged school color
+
 # 0.9.19
 
 - Add partial mutex for spell enchantments and ranged weapon enchantments
