@@ -45,7 +45,7 @@ public class MagicProtectionEnchantment extends ProtectionEnchantment {
         } else {
             isMagic = source.isIn(DamageTypeTags.WITCH_RESISTANT_TO)
                     || source.isIn(DamageTypeTags.WITHER_IMMUNE_TO)
-                    || source.isIn(SpellPowerTags.DamageType.IS_SPELL);
+                    || source.isIn(SpellPowerTags.DamageType.ALL);
         }
         if (isMagic) {
             return Math.round((float)level * config.bonus_per_level);

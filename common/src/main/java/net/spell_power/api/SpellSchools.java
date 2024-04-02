@@ -4,6 +4,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Identifier;
@@ -55,22 +56,20 @@ public class SpellSchools {
         var powerEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, color);
         var translationPrefix = "attribute.name." + id.getNamespace() + ".";
         var attribute = new CustomEntityAttribute(translationPrefix + id.getPath(), 0, 0, 2048, id).setTracked(true);
-        return new SpellSchool(id, color, id, attribute, powerEffect);
+        return createMagic(id, color, attribute, powerEffect);
     }
 
 
     public static SpellSchool createMagic(Identifier id, int color, EntityAttribute powerAttribute, StatusEffect powerEffect) {
-        var translationPrefix = "attribute.name." + id.getNamespace() + ".";
-        var attribute = new CustomEntityAttribute(translationPrefix + id.getPath(), 0, 0, 2048, id).setTracked(true);
         var school = new SpellSchool(
                 id,
                 color,
-                id, // FIXME
-                attribute,
+                DamageTypes.MAGIC, // TODO: Use custom damage type, SpellPowerMod.attributesConfig.value.use_vanilla_magic_damage_type
+                powerAttribute,
                 powerEffect);
 
         school.addSource(SpellSchool.Trait.POWER, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->
-            query.entity().getAttributeValue(attribute))
+            query.entity().getAttributeValue(powerAttribute))
         );
         // Spell Power Enchantments added by Enchantments_SpellDamage.attach
 
@@ -96,7 +95,7 @@ public class SpellSchools {
         }));
 
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage
+            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_damage_percentage
                     + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_DAMAGE.attribute);
             return (value / PERCENT_ATTRIBUTE_BASELINE);
         }));

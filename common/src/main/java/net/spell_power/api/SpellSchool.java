@@ -2,9 +2,10 @@ package net.spell_power.api;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
-import net.spell_power.internals.SpellStatusEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class SpellSchool {
     public final int color;
     public final EntityAttribute powerAttribute;
     @Nullable public final StatusEffect powerEffect;
-    private Identifier damageType;
+    public final RegistryKey<DamageType> damageType;
 
-    public SpellSchool(Identifier id, int color, Identifier damageType, EntityAttribute powerAttribute, @Nullable StatusEffect powerEffect) {
+    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute powerAttribute, @Nullable StatusEffect powerEffect) {
         this.id = id;
         this.color = color;
         this.damageType = damageType;
@@ -58,14 +59,5 @@ public class SpellSchool {
         }
         value *= multiplier;
         return value;
-    }
-
-    // Config
-
-    public void apply(Config config) {
-    }
-
-    public static class Config {
-        public SpellStatusEffect.Config power_effect;
     }
 }

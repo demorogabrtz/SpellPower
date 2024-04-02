@@ -13,7 +13,7 @@ import net.spell_power.SpellPowerMod;
 import net.spell_power.mixin.DamageSourcesAccessor;
 
 public class SpellDamageSource {
-    public static DamageSource create(MagicSchool school, LivingEntity attacker) {
+    public static DamageSource create(SpellSchool school, LivingEntity attacker) {
         if (attacker instanceof PlayerEntity player) {
             return player(school, player);
         } else {
@@ -21,22 +21,16 @@ public class SpellDamageSource {
         }
     }
 
-    public static DamageSource mob(MagicSchool school, LivingEntity attacker) {
+    public static DamageSource mob(SpellSchool school, LivingEntity attacker) {
         return create(school, "mob", attacker);
     }
 
-    public static DamageSource player(MagicSchool school, PlayerEntity attacker) {
+    public static DamageSource player(SpellSchool school, PlayerEntity attacker) {
         return create(school, "player", attacker);
     }
 
-    private static DamageSource create(MagicSchool school, String name, Entity attacker) {
-        if (school.isMagical && SpellPowerMod.attributesConfig.value.use_vanilla_magic_damage_type) {
-            var registry = ((DamageSourcesAccessor)attacker.getDamageSources()).getRegistry();
-            return new DamageSource(registry.entryOf(DamageTypes.MAGIC), attacker);
-        } else {
-            var key = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, school.damageTypeId());
-            var registry = ((DamageSourcesAccessor)attacker.getDamageSources()).getRegistry();
-            return new DamageSource(registry.entryOf(key), attacker);
-        }
+    private static DamageSource create(SpellSchool school, String name, Entity attacker) {
+        var registry = ((DamageSourcesAccessor)attacker.getDamageSources()).getRegistry();
+        return new DamageSource(registry.entryOf(school.damageType), attacker);
     }
 }
