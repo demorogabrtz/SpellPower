@@ -1,5 +1,6 @@
 package net.spell_power;
 
+import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -11,7 +12,7 @@ import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
 
-public class SpellPowerMod {
+public class SpellPowerMod implements ModInitializer {
     public static final String ID = "spell_power";
 
     public static final ConfigManager<AttributesConfig> attributesConfig = new ConfigManager<AttributesConfig>
@@ -31,10 +32,12 @@ public class SpellPowerMod {
 
     private static int effectRawId = 730;
 
-    public static void init() {
+    @Override
+    public void onInitialize() {
         attributesConfig.refresh();
         enchantmentConfig.refresh();
         effectRawId = attributesConfig.value.status_effect_raw_id_starts_at;
+        SpellSchools.all(); // Trigger static initialization
 
         for(var entry: SpellPowerSecondaries.all.entrySet()) {
             var secondary = entry.getValue();

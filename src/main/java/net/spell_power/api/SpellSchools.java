@@ -23,15 +23,6 @@ import static net.spell_power.api.SpellPowerSecondaries.PERCENT_ATTRIBUTE_BASELI
 
 public class SpellSchools {
 
-    // Predefined Spell Schools
-
-    public static final SpellSchool ARCANE = register(createMagic("arcane", 0xff66ff));
-    public static final SpellSchool FIRE = register(createMagic("fire", 0xff3300));
-    public static final SpellSchool FROST = register(createMagic("frost", 0xccffff));
-    public static final SpellSchool HEALING = register(createMagic("healing", 0x66ff66));
-    public static final SpellSchool LIGHTNING = register(createMagic("lightning", 0xffff99));
-    public static final SpellSchool SOUL = register(createMagic("soul", 0x2dd4da));
-
     // Registration
 
     private static final HashMap<Identifier, SpellSchool> REGISTRY = new HashMap<>();
@@ -44,6 +35,17 @@ public class SpellSchools {
     public static Set<SpellSchool> all() {
         return Set.copyOf(REGISTRY.values());
     }
+
+
+    // Predefined Spell Schools
+
+    public static final SpellSchool ARCANE = register(createMagic("arcane", 0xff66ff));
+    public static final SpellSchool FIRE = register(createMagic("fire", 0xff3300));
+    public static final SpellSchool FROST = register(createMagic("frost", 0xccffff));
+    public static final SpellSchool HEALING = register(createMagic("healing", 0x66ff66));
+    public static final SpellSchool LIGHTNING = register(createMagic("lightning", 0xffff99));
+    public static final SpellSchool SOUL = register(createMagic("soul", 0x2dd4da));
+
 
     // School Creation
 

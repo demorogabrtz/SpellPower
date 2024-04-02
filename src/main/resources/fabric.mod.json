@@ -12,11 +12,11 @@
     "issues": "https://github.com/ZsoltMolnarrr/SpellPower/issues"
   },
   "license": "GPL-3.0",
-  "icon": "icon.png",
+  "icon": "assets/spell_power/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.spell_power.fabric.FabricMod"
+      "net.spell_power.SpellPowerMod"
     ]
   },
   "mixins": [
