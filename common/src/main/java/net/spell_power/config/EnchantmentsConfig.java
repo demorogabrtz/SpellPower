@@ -1,6 +1,7 @@
 package net.spell_power.config;
 
-import net.spell_power.api.enchantment.Enchantments_SpellPower;
+import net.spell_power.api.enchantment.Enchantments_SpellBase;
+import net.spell_power.api.enchantment.Enchantments_SpellDamage;
 import net.spell_power.api.enchantment.ItemType;
 import net.tinyconfig.models.EnchantmentConfig;
 import net.tinyconfig.versioning.VersionableConfig;
@@ -27,14 +28,14 @@ public class EnchantmentsConfig extends VersionableConfig {
     // Helper
 
     public void apply() {
-        Enchantments_SpellPower.SPELL_POWER.config = spell_power;
-        Enchantments_SpellPower.SOULFROST.config = soulfrost;
-        Enchantments_SpellPower.SUNFIRE.config = sunfire;
-        Enchantments_SpellPower.ENERGIZE.config = energize;
-        Enchantments_SpellPower.CRITICAL_CHANCE.config = critical_chance;
-        Enchantments_SpellPower.CRITICAL_DAMAGE.config = critical_damage;
-        Enchantments_SpellPower.HASTE.config = haste;
-        Enchantments_SpellPower.MAGIC_PROTECTION.config = magic_protection;
+        Enchantments_SpellBase.CRITICAL_CHANCE.config = critical_chance;
+        Enchantments_SpellBase.CRITICAL_DAMAGE.config = critical_damage;
+        Enchantments_SpellBase.HASTE.config = haste;
+        Enchantments_SpellBase.MAGIC_PROTECTION.config = magic_protection;
+        Enchantments_SpellDamage.SPELL_POWER.config = spell_power;
+        Enchantments_SpellDamage.SOULFROST.config = soulfrost;
+        Enchantments_SpellDamage.SUNFIRE.config = sunfire;
+        Enchantments_SpellDamage.ENERGIZE.config = energize;
     }
 
     public static class ExtendedEnchantmentConfig extends EnchantmentConfig {

@@ -3,22 +3,21 @@ package net.spell_power.internals;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
-import net.spell_power.api.MagicSchool;
+import net.spell_power.api.SpellSchool;
 import net.spell_power.api.enchantment.SpellPowerEnchanting;
 import net.spell_power.config.EnchantmentsConfig;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 public class SchoolFilteredEnchantment extends AmplifierEnchantment {
-    private EnumSet<MagicSchool> schools;
+    private Set<SpellSchool> schools;
 
-    public EnumSet<MagicSchool> poweredSchools() {
+    public Set<SpellSchool> poweredSchools() {
         return schools;
     }
 
-    public SchoolFilteredEnchantment(Rarity weight, Operation operation, EnchantmentsConfig.ExtendedEnchantmentConfig config, EnumSet<MagicSchool> schools, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+    public SchoolFilteredEnchantment(Rarity weight, Operation operation, EnchantmentsConfig.ExtendedEnchantmentConfig config, Set<SpellSchool> schools, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
         super(weight, operation, config, type, slotTypes);
         this.schools = schools;
     }
@@ -28,28 +27,8 @@ public class SchoolFilteredEnchantment extends AmplifierEnchantment {
         return !(other instanceof SchoolFilteredEnchantment) && super.canAccept(other);
     }
 
-    protected boolean schoolsMatch(ItemStack stack) {
-        var item = stack.getItem();
-        EquipmentSlot slot = EquipmentSlot.MAINHAND;
-        if (item instanceof ArmorItem armor) {
-            slot = armor.getSlotType();
-        }
-        var schools = SpellPowerEnchanting.relevantSchools(stack, slot);
-        for (var school : schools) {
-            if (this.schools.contains(school)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean schoolsMatch(EnumSet<MagicSchool> schools, ItemStack stack) {
-        var item = stack.getItem();
-        EquipmentSlot slot = EquipmentSlot.MAINHAND;
-        if (item instanceof ArmorItem armor) {
-            slot = armor.getSlotType();
-        }
-        var itemStackSchools = SpellPowerEnchanting.relevantSchools(stack, slot);
+    public static boolean schoolsIntersect(Set<SpellSchool> schools, ItemStack stack) {
+        var itemStackSchools = SpellPowerEnchanting.relevantSchools(stack);
         for (var school : itemStackSchools) {
             if (schools.contains(school)) {
                 return true;

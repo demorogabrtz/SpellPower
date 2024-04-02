@@ -8,20 +8,14 @@ public class SpellStatusEffect extends StatusEffect {
         super(statusEffectCategory, color);
     }
 
-    public int preferredRawId = 0;
-
     public static class Config {
-        public int raw_id;
-        public int color = 0xFFFFFF;
-        public String udid;
+        public String uuid = "e8222db4-6c3c-4bbe-bacb-6e8d07e96e8b";
         public float bonus_per_stack = 0.1F;
 
         public Config() { }
 
-        public Config(int rawId, int color, String udid, float bonus_per_stack) {
-            this.raw_id = rawId;
-            this.color = color;
-            this.udid = udid;
+        public Config(String uuid, float bonus_per_stack) {
+            this.uuid = uuid;
             this.bonus_per_stack = bonus_per_stack;
         }
     }

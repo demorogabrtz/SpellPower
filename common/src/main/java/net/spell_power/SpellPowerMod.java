@@ -1,16 +1,25 @@
 package net.spell_power;
 
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.spell_power.api.attributes.SpellAttributes;
-import net.spell_power.api.enchantment.Enchantments_SpellPower;
+import net.spell_power.api.SpellPowerSecondaries;
+import net.spell_power.api.SpellSchools;
+import net.spell_power.api.enchantment.Enchantments_SpellBase;
+import net.spell_power.api.enchantment.Enchantments_SpellDamage;
 import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
-import net.spell_power.config.StatusEffectConfig;
 import net.tinyconfig.ConfigManager;
 
 public class SpellPowerMod {
     public static final String ID = "spell_power";
+
+    public static final ConfigManager<AttributesConfig> attributesConfig = new ConfigManager<AttributesConfig>
+            ("attributes", AttributesConfig.defaults())
+            .builder()
+            .setDirectory(ID)
+            .sanitize(true)
+            .build();
 
     public static final ConfigManager<EnchantmentsConfig> enchantmentConfig = new ConfigManager<EnchantmentsConfig>
             ("enchantments", new EnchantmentsConfig())
@@ -20,47 +29,57 @@ public class SpellPowerMod {
             .schemaVersion(3)
             .build();
 
-    public static final ConfigManager<AttributesConfig> attributesConfig = new ConfigManager<AttributesConfig>
-            ("attributes", new AttributesConfig())
-            .builder()
-            .setDirectory(ID)
-            .sanitize(true)
-            .build();
-
-    public static final ConfigManager<StatusEffectConfig> effectsConfig = new ConfigManager<StatusEffectConfig>
-            ("status_effects", new StatusEffectConfig())
-            .builder()
-            .setDirectory(ID)
-            .sanitize(true)
-            .validate(StatusEffectConfig::isValid)
-            .build();
+    private static int effectRawId = 730;
 
     public static void init() {
-        loadConfig();
-        configureStatusEffects();
-    }
-
-    public static void loadConfig() {
+        attributesConfig.refresh();
         enchantmentConfig.refresh();
-        attributesConfig.refresh();
-        effectsConfig.refresh();
-    }
+        effectRawId = attributesConfig.value.status_effect_raw_id_starts_at;
 
-    private static boolean registeredAttributes = false;
-    public static void registerAttributes() {
-        if (registeredAttributes) {
-            return;
-        }
-        attributesConfig.refresh();
-        for(var entry: SpellAttributes.all.entrySet()) {
-            Registry.register(Registries.ATTRIBUTE, entry.getValue().id, entry.getValue().attribute);
-        }
-        registeredAttributes = true;
-    }
+        for(var entry: SpellPowerSecondaries.all.entrySet()) {
+            var secondary = entry.getValue();
+            var id = secondary.id;
+            Registry.register(Registries.ATTRIBUTE, id, secondary.attribute);
 
-    public static void registerEnchantments() {
-        for(var entry: Enchantments_SpellPower.all.entrySet()) {
+            var uuid = "0e0ddd12-0646-42b7-8daf-36b4ccf524df";
+            var bonus_per_stack = 0.1F;
+            var config = attributesConfig.value.secondary_effects.get(secondary.name);
+            if (config != null) {
+                uuid = config.uuid;
+                bonus_per_stack = config.bonus_per_stack;
+            }
+            secondary.boostEffect.addAttributeModifier(
+                    secondary.attribute,
+                    uuid,
+                    bonus_per_stack,
+                    EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+            Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), secondary.boostEffect);
+        }
+
+        for(var entry: Enchantments_SpellBase.all.entrySet()) {
             Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
+        }
+        for(var entry: Enchantments_SpellDamage.all.entrySet()) {
+            Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
+        }
+        enchantmentConfig.value.apply();
+        Enchantments_SpellDamage.attach();
+    }
+
+    public static void registerSchoolSpecificContent() {
+        for(var school: SpellSchools.all()) {
+            var id = school.id;
+            if (Registries.ATTRIBUTE.get(id) == null) {
+                Registry.register(Registries.ATTRIBUTE, id, school.powerAttribute);
+            }
+            if (school.powerEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
+                school.powerEffect.addAttributeModifier(
+                        school.powerAttribute,
+                        "0e0ddd12-0646-42b7-8daf-36b4ccf524df",
+                        attributesConfig.value.spell_power_effect_bonus_per_stack,
+                        EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+                Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.powerEffect);
+            }
         }
     }
 
@@ -77,29 +96,4 @@ public class SpellPowerMod {
 //            registry.register(entry.key(), new DamageType("player", 0.1F));
 //        }
 //    }
-
-    public static void configureEnchantments() {
-        enchantmentConfig.value.apply();
-    }
-
-    public static void registerStatusEffects() {
-        for(var entry: SpellAttributes.all.entrySet()) {
-            var rawId = entry.getValue().statusEffect.preferredRawId;
-            var id = entry.getValue().id;
-            var effect = entry.getValue().statusEffect;
-            if (rawId > 0) {
-                Registry.register(Registries.STATUS_EFFECT, rawId, id.toString(), effect);
-            } else {
-                Registry.register(Registries.STATUS_EFFECT, id, effect);
-            }
-        }
-    }
-
-    public static void configureStatusEffects() {
-        for (var entry: SpellAttributes.all.entrySet()) {
-            var config = effectsConfig.value.effects.get(entry.getKey());
-            var attribute = entry.getValue();
-            attribute.setupStatusEffect(config);
-        }
-    }
 }

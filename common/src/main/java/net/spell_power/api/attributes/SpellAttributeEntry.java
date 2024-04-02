@@ -33,17 +33,13 @@ public class SpellAttributeEntry {
 
     public void setupStatusEffect(@Nullable SpellStatusEffect.Config config) {
         var color = 0xFFFFFF;
-        if (config != null) {
-            color = config.color;
-        }
         this.statusEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, color);
         if (config != null) {
             this.statusEffect.addAttributeModifier(
                     this.attribute,
-                    config.udid,
+                    config.uuid,
                     config.bonus_per_stack,
                     EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-            this.statusEffect.preferredRawId = config.raw_id;
         }
     }
 

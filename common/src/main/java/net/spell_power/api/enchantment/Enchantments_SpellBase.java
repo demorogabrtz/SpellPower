@@ -2,68 +2,24 @@ package net.spell_power.api.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.api.MagicSchool;
+import net.spell_power.api.SpellSchools;
 import net.spell_power.config.EnchantmentsConfig;
 import net.spell_power.internals.AmplifierEnchantment;
 import net.spell_power.api.attributes.SpellAttributes;
 import net.spell_power.internals.MagicProtectionEnchantment;
 import net.spell_power.internals.SchoolFilteredEnchantment;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static net.minecraft.enchantment.EnchantmentTarget.BREAKABLE;
-import static net.spell_power.api.MagicSchool.*;
 import static net.spell_power.internals.AmplifierEnchantment.Operation.ADD;
 import static net.spell_power.internals.AmplifierEnchantment.Operation.MULTIPLY;
 
-public class Enchantments_SpellPower {
-
-    // Damage enchants
-
-    public static final String spellPowerName = "spell_power";
-    public static final Identifier spellPowerId = new Identifier(SpellPowerMod.ID, spellPowerName);
-    public static final SchoolFilteredEnchantment SPELL_POWER = new SchoolFilteredEnchantment(
-            Enchantment.Rarity.UNCOMMON,
-            MULTIPLY,
-            config().spell_power,
-            EnumSet.allOf(MagicSchool.class),
-            BREAKABLE,
-            EquipmentSlot.values());
-
-    public static final String soulfrostName = "soulfrost";
-    public static final Identifier soulfrostId = new Identifier(SpellPowerMod.ID, soulfrostName);
-    public static final SchoolFilteredEnchantment SOULFROST = new SchoolFilteredEnchantment(
-            Enchantment.Rarity.RARE,
-            MULTIPLY,
-            config().soulfrost,
-            EnumSet.of(SOUL, FROST),
-            BREAKABLE,
-            EquipmentSlot.values());
-
-    public static final String sunfireName = "sunfire";
-    public static final Identifier sunfireId = new Identifier(SpellPowerMod.ID, sunfireName);
-    public static final SchoolFilteredEnchantment SUNFIRE = new SchoolFilteredEnchantment(
-            Enchantment.Rarity.RARE,
-            MULTIPLY,
-            config().sunfire,
-            EnumSet.of(ARCANE, FIRE),
-            BREAKABLE,
-            EquipmentSlot.values());
-
-    public static final String energizeName = "energize";
-    public static final Identifier energizeId = new Identifier(SpellPowerMod.ID, energizeName);
-    public static final SchoolFilteredEnchantment ENERGIZE = new SchoolFilteredEnchantment(
-            Enchantment.Rarity.RARE,
-            MULTIPLY,
-            config().energize,
-            EnumSet.of(HEALING, LIGHTNING),
-            BREAKABLE,
-            EquipmentSlot.values());
+public class Enchantments_SpellBase {
 
     // Rating enchants
 
@@ -100,34 +56,16 @@ public class Enchantments_SpellPower {
 
     // Helpers
 
-    public static final Map<Identifier, SchoolFilteredEnchantment> damageEnchants;
     public static final Map<Identifier, Enchantment> all;
     static {
-        damageEnchants = new HashMap<>();
-        damageEnchants.put(spellPowerId, SPELL_POWER);
-        damageEnchants.put(soulfrostId, SOULFROST);
-        damageEnchants.put(sunfireId, SUNFIRE);
-        damageEnchants.put(energizeId, ENERGIZE);
-
         Map<Identifier, AmplifierEnchantment> secondaries = new HashMap<>();
         secondaries.put(criticalChanceId, CRITICAL_CHANCE);
         secondaries.put(criticalDamageId, CRITICAL_DAMAGE);
         secondaries.put(hasteId, HASTE);
 
         all = new HashMap<>();
-        all.putAll(damageEnchants);
         all.putAll(secondaries);
         all.put(magicProtectionId, MAGIC_PROTECTION);
-
-        for(var entry: damageEnchants.entrySet()) {
-            var enchantment = entry.getValue();
-            EnchantmentRestriction.prohibit(enchantment, itemStack -> {
-                var itemTypeRequirement = enchantment.config.requires;
-                var typeMatches = itemTypeRequirement == null || itemTypeRequirement.matches(itemStack);
-                var schoolMatches = SchoolFilteredEnchantment.schoolsMatch(enchantment.poweredSchools(), itemStack);
-                return !typeMatches || !schoolMatches;
-            });
-        }
 
         for(var entry: secondaries.entrySet()) {
             var enchantment = entry.getValue();

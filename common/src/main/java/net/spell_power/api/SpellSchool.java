@@ -4,6 +4,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.util.Identifier;
+import net.spell_power.internals.SpellStatusEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,18 +14,18 @@ import java.util.function.Function;
 
 public class SpellSchool {
     // Given
-    public Identifier id;
-    public int color;
+    public final Identifier id;
+    public final int color;
+    public final EntityAttribute powerAttribute;
+    @Nullable public final StatusEffect powerEffect;
     private Identifier damageType;
-    public EntityAttribute powerAttribute;
-    public StatusEffect statusEffect;
 
-    public SpellSchool(Identifier id, int color, Identifier damageType, EntityAttribute powerAttribute, StatusEffect statusEffect) {
+    public SpellSchool(Identifier id, int color, Identifier damageType, EntityAttribute powerAttribute, @Nullable StatusEffect powerEffect) {
         this.id = id;
         this.color = color;
         this.damageType = damageType;
         this.powerAttribute = powerAttribute;
-        this.statusEffect = statusEffect;
+        this.powerEffect = powerEffect;
     }
 
     // Sources
@@ -60,11 +62,10 @@ public class SpellSchool {
 
     // Config
 
+    public void apply(Config config) {
+    }
+
     public static class Config {
-        public int color = 0xFFFFFF;
-        public static class StatusEffect {
-            public String uuid;
-            public double bonus_per_stack;
-        }
+        public SpellStatusEffect.Config power_effect;
     }
 }

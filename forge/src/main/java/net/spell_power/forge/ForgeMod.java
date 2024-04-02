@@ -5,7 +5,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 import net.spell_power.SpellPowerMod;
 import net.minecraftforge.fml.common.Mod;
-import net.spell_power.api.enchantment.Enchantments_SpellPower;
+import net.spell_power.api.enchantment.Enchantments_SpellBase;
 import net.spell_power.api.attributes.SpellAttributes;
 
 @Mod(SpellPowerMod.ID)
@@ -29,7 +29,7 @@ public class ForgeMod {
         );
         event.register(ForgeRegistries.Keys.ENCHANTMENTS,
                 helper -> {
-                    for(var entry: Enchantments_SpellPower.all.entrySet()) {
+                    for(var entry: Enchantments_SpellBase.all.entrySet()) {
                         helper.register(entry.getKey(), entry.getValue());
                     }
                 }

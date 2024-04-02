@@ -14,7 +14,7 @@ public class AmplifierEnchantment extends Enchantment {
 
     public EnchantmentsConfig.ExtendedEnchantmentConfig config;
 
-    public double amplify(double value, int level) {
+    public double amplified(double value, int level) {
         switch (operation) {
             case ADD -> {
                 return value += ((float)level) * config.bonus_per_level;

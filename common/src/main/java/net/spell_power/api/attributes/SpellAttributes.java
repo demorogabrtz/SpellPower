@@ -11,19 +11,10 @@ public class SpellAttributes {
     public final static SpellAttributeEntry CRITICAL_CHANCE = new SpellAttributeEntry("critical_chance", PERCENT_ATTRIBUTE_BASELINE);
     public final static SpellAttributeEntry CRITICAL_DAMAGE = new SpellAttributeEntry("critical_damage", PERCENT_ATTRIBUTE_BASELINE);
     public final static SpellAttributeEntry HASTE = new SpellAttributeEntry("haste", PERCENT_ATTRIBUTE_BASELINE);
-    public static final Map<MagicSchool, SpellAttributeEntry> POWER;
-
 
     public static final Map<String, SpellAttributeEntry> all;
     static {
         all = new HashMap<>();
-        POWER = new HashMap<>();
-        for (MagicSchool school : MagicSchool.values()) {
-            if (school.isExternalAttribute()) { continue; }
-            var family = new SpellAttributeEntry(school);
-            all.put(family.name, family);
-            POWER.put(school, family);
-        }
         List.of(CRITICAL_CHANCE, CRITICAL_DAMAGE, HASTE).forEach(family -> {
             all.put(family.name, family);
         });

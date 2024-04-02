@@ -7,9 +7,5 @@ public class FabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
         SpellPowerMod.init();
-        SpellPowerMod.registerAttributes();
-        SpellPowerMod.registerEnchantments();
-        SpellPowerMod.configureEnchantments();
-        SpellPowerMod.registerStatusEffects();
     }
 }
