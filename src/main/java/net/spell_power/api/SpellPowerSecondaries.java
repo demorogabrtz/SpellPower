@@ -4,7 +4,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.api.attributes.CustomEntityAttribute;
+import net.spell_power.internals.CustomEntityAttribute;
 import net.spell_power.internals.SpellStatusEffect;
 
 import java.util.HashMap;

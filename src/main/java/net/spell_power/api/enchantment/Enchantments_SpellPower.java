@@ -16,7 +16,7 @@ import java.util.Set;
 import static net.minecraft.enchantment.EnchantmentTarget.BREAKABLE;
 import static net.spell_power.internals.AmplifierEnchantment.Operation.ADD;
 
-public class Enchantments_SpellDamage {
+public class Enchantments_SpellPower {
     public static final String spellPowerName = "spell_power";
     public static final Identifier spellPowerId = new Identifier(SpellPowerMod.ID, spellPowerName);
     public static final SchoolFilteredEnchantment SPELL_POWER = new SchoolFilteredEnchantment(

@@ -6,8 +6,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.spell_power.api.SpellPowerSecondaries;
 import net.spell_power.api.SpellSchools;
-import net.spell_power.api.enchantment.Enchantments_SpellBase;
-import net.spell_power.api.enchantment.Enchantments_SpellDamage;
+import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
+import net.spell_power.api.enchantment.Enchantments_SpellPower;
 import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
@@ -59,14 +59,14 @@ public class SpellPowerMod implements ModInitializer {
             Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), secondary.boostEffect);
         }
 
-        for(var entry: Enchantments_SpellBase.all.entrySet()) {
+        for(var entry: Enchantments_SpellSecondaries.all.entrySet()) {
             Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
         }
-        for(var entry: Enchantments_SpellDamage.all.entrySet()) {
+        for(var entry: Enchantments_SpellPower.all.entrySet()) {
             Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
         }
         enchantmentConfig.value.apply();
-        Enchantments_SpellDamage.attach();
+        Enchantments_SpellPower.attach();
     }
 
     public static void registerSchoolSpecificContent() {

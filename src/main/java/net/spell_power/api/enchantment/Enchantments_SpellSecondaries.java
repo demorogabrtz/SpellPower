@@ -4,26 +4,22 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.api.SpellSchools;
+import net.spell_power.api.SpellPowerSecondaries;
 import net.spell_power.config.EnchantmentsConfig;
 import net.spell_power.internals.AmplifierEnchantment;
-import net.spell_power.api.attributes.SpellAttributes;
 import net.spell_power.internals.MagicProtectionEnchantment;
-import net.spell_power.internals.SchoolFilteredEnchantment;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static net.minecraft.enchantment.EnchantmentTarget.BREAKABLE;
 import static net.spell_power.internals.AmplifierEnchantment.Operation.ADD;
-import static net.spell_power.internals.AmplifierEnchantment.Operation.MULTIPLY;
 
-public class Enchantments_SpellBase {
+public class Enchantments_SpellSecondaries {
 
     // Rating enchants
 
-    public static final Identifier criticalChanceId = new Identifier(SpellPowerMod.ID, SpellAttributes.CRITICAL_CHANCE.name);
+    public static final Identifier criticalChanceId = new Identifier(SpellPowerMod.ID, SpellPowerSecondaries.CRITICAL_CHANCE.name);
     public static final AmplifierEnchantment CRITICAL_CHANCE = new AmplifierEnchantment(
             Enchantment.Rarity.UNCOMMON,
             ADD,
@@ -31,7 +27,7 @@ public class Enchantments_SpellBase {
             BREAKABLE,
             EquipmentSlot.values());
 
-    public static final Identifier criticalDamageId = new Identifier(SpellPowerMod.ID, SpellAttributes.CRITICAL_DAMAGE.name);
+    public static final Identifier criticalDamageId = new Identifier(SpellPowerMod.ID, SpellPowerSecondaries.CRITICAL_DAMAGE.name);
     public static final AmplifierEnchantment CRITICAL_DAMAGE = new AmplifierEnchantment(
             Enchantment.Rarity.UNCOMMON,
             ADD,
@@ -39,7 +35,7 @@ public class Enchantments_SpellBase {
             BREAKABLE,
             EquipmentSlot.values());
 
-    public static final Identifier hasteId = new Identifier(SpellPowerMod.ID, SpellAttributes.HASTE.name);
+    public static final Identifier hasteId = new Identifier(SpellPowerMod.ID, SpellPowerSecondaries.HASTE.name);
     public static final AmplifierEnchantment HASTE = new AmplifierEnchantment(
             Enchantment.Rarity.RARE,
             ADD,

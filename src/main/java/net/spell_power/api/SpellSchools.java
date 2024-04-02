@@ -9,15 +9,13 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.api.attributes.CustomEntityAttribute;
-import net.spell_power.api.enchantment.Enchantments_SpellBase;
+import net.spell_power.internals.CustomEntityAttribute;
+import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
 import net.spell_power.api.enchantment.SpellPowerEnchanting;
 import net.spell_power.internals.SpellStatusEffect;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import static net.spell_power.api.SpellPowerSecondaries.PERCENT_ATTRIBUTE_BASELINE;
 
@@ -25,7 +23,7 @@ public class SpellSchools {
 
     // Registration
 
-    private static final HashMap<Identifier, SpellSchool> REGISTRY = new HashMap<>();
+    private static final LinkedHashMap<Identifier, SpellSchool> REGISTRY = new LinkedHashMap<>();
 
     public static SpellSchool register(SpellSchool school) {
         REGISTRY.put(school.id, school);
@@ -33,7 +31,7 @@ public class SpellSchools {
     }
 
     public static Set<SpellSchool> all() {
-        return Set.copyOf(REGISTRY.values());
+        return new LinkedHashSet<SpellSchool>(REGISTRY.values());
     }
 
 
@@ -80,7 +78,7 @@ public class SpellSchools {
             return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
         }));
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var enchantment = Enchantments_SpellBase.HASTE;
+            var enchantment = Enchantments_SpellSecondaries.HASTE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));
@@ -91,7 +89,7 @@ public class SpellSchools {
             return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
         }));
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var enchantment = Enchantments_SpellBase.CRITICAL_CHANCE;
+            var enchantment = Enchantments_SpellSecondaries.CRITICAL_CHANCE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));
@@ -102,7 +100,7 @@ public class SpellSchools {
             return (value / PERCENT_ATTRIBUTE_BASELINE);
         }));
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var enchantment = Enchantments_SpellBase.CRITICAL_DAMAGE;
+            var enchantment = Enchantments_SpellSecondaries.CRITICAL_DAMAGE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));

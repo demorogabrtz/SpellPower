@@ -1,13 +1,6 @@
 package net.spell_power.api;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.spell_power.SpellPowerMod;
-import net.spell_power.api.enchantment.Enchantments_SpellBase;
 import net.spell_power.api.statuseffects.VulnerabilityEffect;
 
 import java.util.ArrayList;
@@ -15,8 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-
-import static net.spell_power.api.attributes.SpellAttributes.PERCENT_ATTRIBUTE_BASELINE;
 
 public class SpellPower {
     public record Result(SpellSchool school, double baseValue, double criticalChance, double criticalDamage) {
