@@ -27,6 +27,10 @@ public class SpellSchools {
 
     // Registration
 
+    /**
+     * Default namespace for spell schools
+     */
+    public static final String DEFAULT_NAMESPACE = SpellPowerMod.ID;
     private static final LinkedHashMap<Identifier, SpellSchool> REGISTRY = new LinkedHashMap<>();
 
     public static SpellSchool register(SpellSchool school) {
@@ -52,7 +56,7 @@ public class SpellSchools {
     // School Creation
 
     public static SpellSchool createMagic(String name, int color) {
-        return createMagic(new Identifier(SpellPowerMod.ID, name.toLowerCase()), color);
+        return createMagic(new Identifier(DEFAULT_NAMESPACE, name.toLowerCase()), color);
     }
 
 
@@ -63,7 +67,6 @@ public class SpellSchools {
         return createMagic(id, color, attribute, powerEffect);
     }
 
-
     public static SpellSchool createMagic(Identifier id, int color, EntityAttribute powerAttribute, StatusEffect powerEffect) {
         var school = new SpellSchool(
                 id,
@@ -71,9 +74,13 @@ public class SpellSchools {
                 DamageTypes.MAGIC, // TODO: Use custom damage type, SpellPowerMod.attributesConfig.value.use_vanilla_magic_damage_type
                 powerAttribute,
                 powerEffect);
+        return configureAsMagic(school, powerAttribute);
+    }
 
+
+    public static SpellSchool configureAsMagic(SpellSchool school, EntityAttribute powerAttribute) {
         school.addSource(SpellSchool.Trait.POWER, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->
-            query.entity().getAttributeValue(powerAttribute))
+                query.entity().getAttributeValue(powerAttribute))
         );
         // Spell Power Enchantments added by Enchantments_SpellDamage.attach
 
@@ -89,7 +96,7 @@ public class SpellSchools {
 
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->  {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage  // 5
-            + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_CHANCE.attribute);    // 20
+                    + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_CHANCE.attribute);    // 20
             return (value / PERCENT_ATTRIBUTE_BASELINE) - 1;  // For example: (125/100) - 1 = 0.25
         }));
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
@@ -108,7 +115,6 @@ public class SpellSchools {
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));
-
         return school;
     }
 
@@ -119,7 +125,7 @@ public class SpellSchools {
         var id = new Identifier(string);
         // Replacing default namespace
         if (id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
-            id = new Identifier(SpellPowerMod.ID, id.getPath());
+            id = new Identifier(DEFAULT_NAMESPACE, id.getPath());
         }
         return REGISTRY.get(id);
     }
