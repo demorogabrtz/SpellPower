@@ -3,13 +3,7 @@ package net.spell_power.api;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.spell_power.SpellPowerMod;
 import net.spell_power.mixin.DamageSourcesAccessor;
 
 public class SpellDamageSource {

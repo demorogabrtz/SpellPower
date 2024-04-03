@@ -1,5 +1,11 @@
-# 0.9.20
+# 0.10.1
 
+Lots of breaking API Changes:
+- Replaced several crucial types, most notably: MagicSchool -> SpellSchool
+- Removed PHYSICAL_RANGED and PHYSICAL_MELEE schools
+- SpellSchools can now be added from external sources
+
+Functional changes:
 - Update physical ranged school color
 
 # 0.9.19

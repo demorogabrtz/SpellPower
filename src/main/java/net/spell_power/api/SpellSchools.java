@@ -9,13 +9,16 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.internals.CustomEntityAttribute;
 import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
 import net.spell_power.api.enchantment.SpellPowerEnchanting;
+import net.spell_power.internals.CustomEntityAttribute;
 import net.spell_power.internals.SpellStatusEffect;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import static net.spell_power.api.SpellPowerSecondaries.PERCENT_ATTRIBUTE_BASELINE;
 
@@ -74,7 +77,7 @@ public class SpellSchools {
         // Spell Power Enchantments added by Enchantments_SpellDamage.attach
 
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var value = query.entity().getAttributeValue(SpellPowerSecondaries.HASTE.attribute); // For example: 110 (with +10% modifier)
+            var value = query.entity().getAttributeValue(SpellPowerSecondaries.HASTE.attribute); // 110
             return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
         }));
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
@@ -84,9 +87,9 @@ public class SpellSchools {
         }));
 
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->  {
-            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage
-            + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_CHANCE.attribute);
-            return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
+            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage  // 5
+            + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_CHANCE.attribute);    // 20
+            return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 125/100 = 1.25
         }));
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellSecondaries.CRITICAL_CHANCE;
@@ -95,9 +98,9 @@ public class SpellSchools {
         }));
 
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
-            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_damage_percentage
-                    + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_DAMAGE.attribute);
-            return (value / PERCENT_ATTRIBUTE_BASELINE);
+            var value = SpellPowerMod.attributesConfig.value.base_spell_critical_damage_percentage          // 50
+                    + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_DAMAGE.attribute);    // 110
+            return (value / PERCENT_ATTRIBUTE_BASELINE);    // For example: 160/100 = 1.6
         }));
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellSecondaries.CRITICAL_DAMAGE;
