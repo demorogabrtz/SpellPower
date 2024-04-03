@@ -20,6 +20,7 @@ public class SpellPowerMod implements ModInitializer {
             .builder()
             .setDirectory(ID)
             .sanitize(true)
+            .validate(AttributesConfig::isValid)
             .build();
 
     public static final ConfigManager<EnchantmentsConfig> enchantmentConfig = new ConfigManager<EnchantmentsConfig>

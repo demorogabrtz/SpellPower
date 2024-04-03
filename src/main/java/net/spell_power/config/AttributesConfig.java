@@ -22,4 +22,19 @@ public class AttributesConfig {
         );
         return config;
     }
+
+    public boolean isValid() {
+        var defaults = defaults();
+
+        if (secondary_effects == null) {
+            return false;
+        }
+        for(var entry: defaults.secondary_effects.entrySet()) {
+            if (!secondary_effects.containsKey(entry.getKey())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
