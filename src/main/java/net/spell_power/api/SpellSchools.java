@@ -80,10 +80,16 @@ public class SpellSchools {
 
     public static SpellSchool configureAsMagic(SpellSchool school, EntityAttribute powerAttribute) {
         school.addSource(SpellSchool.Trait.POWER, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->
-                query.entity().getAttributeValue(powerAttribute))
+            query.entity().getAttributeValue(powerAttribute))
         );
         // Spell Power Enchantments added by Enchantments_SpellDamage.attach
+        configureSpellHaste(school);
+        configureSpellCritChance(school);
+        configureSpellCritDamage(school);
+        return school;
+    }
 
+    public static SpellSchool configureSpellHaste(SpellSchool school) {
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var value = query.entity().getAttributeValue(SpellPowerMechanics.HASTE.attribute); // 110
             return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
@@ -93,7 +99,10 @@ public class SpellSchools {
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));
+        return school;
+    }
 
+    public static SpellSchool configureSpellCritChance(SpellSchool school) {
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->  {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage  // 5
                     + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_CHANCE.attribute);    // 20
@@ -104,7 +113,10 @@ public class SpellSchools {
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
             return enchantment.amplified(0, level);
         }));
+        return school;
+    }
 
+    public static SpellSchool configureSpellCritDamage(SpellSchool school) {
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_damage_percentage          // 50
                     + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_DAMAGE.attribute);    // 110

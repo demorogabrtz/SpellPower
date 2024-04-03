@@ -96,9 +96,16 @@ public class SpellSchool {
     }
 
     public double getValue(Trait trait, QueryArgs query) {
+        var traitSources = sources.get(trait);
+        if (traitSources.isEmpty()) {
+            switch (trait) {
+                case POWER, CRIT_CHANCE -> { return 0; }
+                case HASTE, CRIT_DAMAGE -> { return 1; }
+            }
+        }
         var value = 0F;
         var multiplier = 1F;
-        for (var source: sources.get(trait)) {
+        for (var source: traitSources) {
             switch (source.apply) {
                 case ADD -> value += source.function.apply(query);
                 case MULTIPLY -> multiplier += source.function.apply(query);
