@@ -13,6 +13,7 @@ import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
 import net.spell_power.api.enchantment.SpellPowerEnchanting;
 import net.spell_power.internals.CustomEntityAttribute;
 import net.spell_power.internals.SpellStatusEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -113,6 +114,16 @@ public class SpellSchools {
 
     // Utility
 
+    @Nullable public static SpellSchool getSchool(String idString) {
+        var string = idString.toLowerCase(Locale.US);
+        var id = new Identifier(string);
+        // Replacing default namespace
+        if (id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
+            id = new Identifier(SpellPowerMod.ID, id.getPath());
+        }
+        return REGISTRY.get(id);
+    }
+
     public static class IdTypeAdapter extends TypeAdapter<SpellSchool> {
         @Override
         public void write(JsonWriter jsonWriter, SpellSchool school) throws IOException {
@@ -121,13 +132,7 @@ public class SpellSchools {
 
         @Override
         public SpellSchool read(JsonReader jsonReader) throws IOException {
-            var string = jsonReader.nextString().toLowerCase(Locale.US);
-            var id = new Identifier(string);
-            // Replacing default namespace
-            if (id.getNamespace().equals(Identifier.DEFAULT_NAMESPACE)) {
-                id = new Identifier(SpellPowerMod.ID, id.getPath());
-            }
-            return REGISTRY.get(id);
+            return getSchool(jsonReader.nextString());
         }
     }
 }

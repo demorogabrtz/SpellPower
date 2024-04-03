@@ -21,7 +21,7 @@ This library introduces new Entity Attributes for powering magical abilities, fo
 
 (Note: the design intent is to stay native to Minecraft, but establish Warcraft like magic schools. So no classic 4 element schools are implemented, besides fire.)
 
-The library offers an API to query spell damage of an entity (based on its attributes, status effects, enchantments), and provides critical strike chance and multiplier. Critical striking is completely rng based, powered by secondary attributes.
+The library offers an API to query spell power of an entity (based on its attributes, status effects, enchantments), and provides critical strike chance and multiplier. Critical striking is completely rng based, powered by secondary attributes.
 
 ## 📦 Content
 
@@ -245,6 +245,8 @@ SpellPower.vulnerabilitySources.add(query -> {
 ```
 
 ### Adopting Spell Haste
+
+Spell Haste represents the casting speed of spells.
 
 If implementing completely custom spells and want to calculate with Spell Haste attribute of players keep reading.
 
