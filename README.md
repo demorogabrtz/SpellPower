@@ -116,9 +116,9 @@ Use the attributes by directly referencing their original instance. For example:
 ```java
 // ✅ 
 SpellSchools.FIRE.attribute;
-SpellPowerSecondaries.CRITICAL_CHANCE.attribute;
-SpellPowerSecondaries.CRITICAL_DAMAGE.attribute;
-SpellPowerSecondaries.HASTE.attribute;
+SpellPowerMechanics.CRITICAL_CHANCE.attribute;
+SpellPowerMechanics.CRITICAL_DAMAGE.attribute;
+SpellPowerMechanics.HASTE.attribute;
 ```
 
 Alternatively you can resolve them from attribute registry.
@@ -176,7 +176,7 @@ builder.put(SpellSchools.FIRE.attribute,
 );
 
 var haste = 0.01; // +10% Spell Haste
-builder.put(SpellPowerSecondaries.HASTE.attribute,
+builder.put(SpellPowerMechanics.HASTE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
         "Spell Haste",
@@ -187,7 +187,7 @@ builder.put(SpellPowerSecondaries.HASTE.attribute,
 
 
 var critChance = 0.01; // +1% Spell Crit Chance
-builder.put(SpellPowerSecondaries.CRITICAL_CHANCE.attribute,
+builder.put(SpellPowerMechanics.CRITICAL_CHANCE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
         "Spell Crit Chance",
@@ -197,7 +197,7 @@ builder.put(SpellPowerSecondaries.CRITICAL_CHANCE.attribute,
 );
 
 var critDamage = 0.5; // +50% Spell Crit Damage
-builder.put(SpellPowerSecondaries.CRITICAL_DAMAGE.attribute,
+builder.put(SpellPowerMechanics.CRITICAL_DAMAGE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
         "Crit Damage",

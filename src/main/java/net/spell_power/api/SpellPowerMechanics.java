@@ -9,7 +9,7 @@ import net.spell_power.internals.SpellStatusEffect;
 
 import java.util.HashMap;
 
-public class SpellPowerSecondaries {
+public class SpellPowerMechanics {
     public final static float PERCENT_ATTRIBUTE_BASELINE = 100F;
     public static String translationPrefix() {
         return "attribute.name." + SpellPowerMod.ID + ".";

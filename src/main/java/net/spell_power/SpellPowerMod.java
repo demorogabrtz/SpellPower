@@ -4,10 +4,10 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.spell_power.api.SpellPowerSecondaries;
+import net.spell_power.api.SpellPowerMechanics;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
-import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
+import net.spell_power.api.enchantment.Enchantments_SpellPowerMechanics;
 import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
@@ -38,7 +38,7 @@ public class SpellPowerMod implements ModInitializer {
         enchantmentConfig.refresh();
         effectRawId = attributesConfig.value.status_effect_raw_id_starts_at;
 
-        for(var entry: SpellPowerSecondaries.all.entrySet()) {
+        for(var entry: SpellPowerMechanics.all.entrySet()) {
             var secondary = entry.getValue();
             var id = secondary.id;
 
@@ -57,7 +57,7 @@ public class SpellPowerMod implements ModInitializer {
             Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), secondary.boostEffect);
         }
 
-        for(var entry: Enchantments_SpellSecondaries.all.entrySet()) {
+        for(var entry: Enchantments_SpellPowerMechanics.all.entrySet()) {
             Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
         }
         for(var entry: Enchantments_SpellPower.all.entrySet()) {
@@ -68,7 +68,7 @@ public class SpellPowerMod implements ModInitializer {
     }
 
     public static void registerAttributes() {
-        for (var entry : SpellPowerSecondaries.all.entrySet()) {
+        for (var entry : SpellPowerMechanics.all.entrySet()) {
             var secondary = entry.getValue();
             Registry.register(Registries.ATTRIBUTE, secondary.id, secondary.attribute);
         }

@@ -1,7 +1,7 @@
 package net.spell_power.config;
 
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
-import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
+import net.spell_power.api.enchantment.Enchantments_SpellPowerMechanics;
 import net.spell_power.api.enchantment.ItemType;
 import net.tinyconfig.models.EnchantmentConfig;
 import net.tinyconfig.versioning.VersionableConfig;
@@ -28,10 +28,10 @@ public class EnchantmentsConfig extends VersionableConfig {
     // Helper
 
     public void apply() {
-        Enchantments_SpellSecondaries.CRITICAL_CHANCE.config = critical_chance;
-        Enchantments_SpellSecondaries.CRITICAL_DAMAGE.config = critical_damage;
-        Enchantments_SpellSecondaries.HASTE.config = haste;
-        Enchantments_SpellSecondaries.MAGIC_PROTECTION.config = magic_protection;
+        Enchantments_SpellPowerMechanics.CRITICAL_CHANCE.config = critical_chance;
+        Enchantments_SpellPowerMechanics.CRITICAL_DAMAGE.config = critical_damage;
+        Enchantments_SpellPowerMechanics.HASTE.config = haste;
+        Enchantments_SpellPowerMechanics.MAGIC_PROTECTION.config = magic_protection;
         Enchantments_SpellPower.SPELL_POWER.config = spell_power;
         Enchantments_SpellPower.SOULFROST.config = soulfrost;
         Enchantments_SpellPower.SUNFIRE.config = sunfire;
