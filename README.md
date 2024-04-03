@@ -271,7 +271,7 @@ float hasteAffectedValue(PlayerEntity caster, float value) {
 }
 ```
 
-## Creating Spell Schools
+## Creating custom Spell Schools
 
 To create a new spell school:
 1. Create `SpellSchool` instance
