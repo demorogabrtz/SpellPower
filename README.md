@@ -244,7 +244,7 @@ SpellPower.vulnerabilitySources.add(query -> {
 })
 ```
 
-### Adopting Spell haste
+### Adopting Spell Haste
 
 If implementing completely custom spells and want to calculate with Spell Haste attribute of players keep reading.
 
@@ -287,7 +287,7 @@ public class BloodMagicMod {
 }
 ``` 
 
-Additionally, if you want to enable other developers to access the spell power attribute of your custom school, you need to trigger its registration within EntityAttributes static init.
+Additionally, if you want to enable other developers to resolve the spell power attribute of your custom school from registry, during the initialisation of their mod, you need to trigger its registration within EntityAttributes static init.
 ```java
 @Mixin(value = EntityAttributes.class)
 public class EntityAttributesMixin {
