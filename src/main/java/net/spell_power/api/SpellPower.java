@@ -99,6 +99,11 @@ public class SpellPower {
                 school.getValue(SpellSchool.Trait.CRIT_DAMAGE, args));
     }
 
+    public static float getHaste(SpellSchool school, LivingEntity entity) {
+        var args = new SpellSchool.QueryArgs(entity);
+        return (float) school.getValue(SpellSchool.Trait.HASTE, args);
+    }
+
 //    public static Result getSpellPower(MagicSchool school, LivingEntity entity) {
 //        return getSpellPower(school, entity, null);
 //    }

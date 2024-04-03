@@ -89,7 +89,7 @@ public class SpellSchools {
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->  {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage  // 5
             + query.entity().getAttributeValue(SpellPowerSecondaries.CRITICAL_CHANCE.attribute);    // 20
-            return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 125/100 = 1.25
+            return (value / PERCENT_ATTRIBUTE_BASELINE) - 1;  // For example: (125/100) - 1 = 0.25
         }));
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellSecondaries.CRITICAL_CHANCE;

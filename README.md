@@ -36,13 +36,14 @@ The library offers an API to query spell damage of an entity (based on its attri
 - Represents chance of critical striking with spells 
 - Attribute id: `spell_power:critical_chance`
 - `Base value = 100` (technically) (this means 0% critical chance)
-- Example values: 120% = 20% critical chance, 200% = 100% critical chance
+- Example values: `120` ( = 20% critical chance), `200` ( = 100% critical chance)
 - All players have a `0.05, MULTIPLY_BASE` modifier by default, so the practical default value is `105` chance, making all spells `5%` critical chance by default
 
 #### Spell critical damage 
 - Represents how much damage is increased when critical striking wit a spell
 - Attribute id: `spell_power:critical_damage`
-- `Base value = 100` (technically)  (this means critical strikes don't do more damage than non-critical ones)
+- `Base value = 100` (this means critical strikes don't do more damage than non-critical ones)
+- Example values: `150` ( = 150% critical damage), `200` ( = 200% critical chance)
 - All players have a `0.5, MULTIPLY_BASE` modifier by default, so the practical default value is 150, making all spells doe 1.5x damage on critical strike by default
 
 #### Spell haste
@@ -50,7 +51,7 @@ The library offers an API to query spell damage of an entity (based on its attri
 - Attribute id: `spell_power:haste`
 - `Base value = 100` (this means player casts spells at normal speed)
 - Players have no modifiers by default
-- Example values = 50 (50% faster spell casting), 200 (200% faster spell casting)
+- Example values: `50` (50% faster spell casting), 200 (200% faster spell casting)
 
 ### Status Effects
 Each introduced attribute (mentioned above), has with a matching status effect to boost them.
@@ -114,8 +115,10 @@ In `fabric.mod.json` add a dependency to the mod:
 Use the attributes by directly referencing their original instance. For example: 
 ```java
 // ✅ 
-EntityAttributes_SpellPower.POWER.get(MagicSchool.FIRE);
-EntityAttributes_SpellPower.CRITICAL_CHANCE;
+SpellSchools.FIRE.attribute;
+SpellSecondaries.CRITICAL_CHANCE.attribute;
+SpellSecondaries.CRITICAL_DAMAGE.attribute;
+SpellSecondaries.HASTE.attribute;
 ```
 
 Do not resolve them attribute registry, as they are not guaranteed to be registered at the runtime of your code.
@@ -137,7 +140,7 @@ Use the dedicated API (`SpellPower` class) to query spell power of an entity (on
 ```java
 // Given `player` is a PlayerEntity
 // ✅
-var result = SpellPower.getSpellPower(player, MagicSchool.FIRE);
+var result = SpellPower.getSpellPower(player, SpellSchools.FIRE);
 double value = result.randomValue(); // Randomly produces a critical strike or a base value (based on attributes)
 double forcedCritValue = result.forcedCriticalValue(); // Forces a critical strike value
 dobule forcedBaseValue = result.nonCriticalValue()(); // Forces a non-critical strike value
@@ -152,7 +155,7 @@ The total value of Spell Power queried completely depends on the content mods.
 Do not use vanilla API to query Spell Power values, as it doesn't take into account any of the above mentioned factors.
 ```java
 // 🚫
-player.getAttributeValue(EntityAttributes_SpellPower.POWER.get(MagicSchool.FIRE));
+player.getAttributeValue(SpellSchools.FIRE.attribute);
 ```
 
 ### Adding attributes modifiers to equipment
@@ -161,8 +164,7 @@ Add attributes modifiers to your equipment items, to increase spell power of the
 ```java
 // Given: `ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder`
 var fireSpellPower = 1;
-builder.put(
-    EntityAttributes_SpellPower.POWER.get(MagicSchool.FIRE),
+builder.put(SpellSchools.FIRE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
         "Spell Power",
@@ -195,7 +197,7 @@ public class FrozenStatusEffect extends SpellVulnerabilityStatusEffect { ... }
 
 // 2. Create your status effect instance and configure it
 public static StatusEffect frozen = new FrozenStatusEffect(StatusEffectCategory.HARMFUL, 0x99ccff)
-        .setVulnerability(MagicSchool.FROST, new SpellPower.Vulnerability(0, 1F, 0F));
+        .setVulnerability(SpellSchools.FROST, new SpellPower.Vulnerability(0, 1F, 0F));
 
 // 3. Register your status effect as usual
 ```
@@ -216,7 +218,7 @@ If implementing completely custom spells and want to calculate with Spell Haste 
 To retrieve the Spell Haste value of a player, use the following API:
 ```java
 // Given `player` is a PlayerEntity
-double haste = SpellPower.getHaste(player);
+double haste = SpellPower.getHaste(player, SpellSchools.FIRE);
 ```
 
 This value represents a relative casting speed. For example:
@@ -231,7 +233,7 @@ float hasteAffectedCooldownDuration = hasteAffectedValue(caster, myCooldownDurat
 float hasteAffectedSpellCastDuration = hasteAffectedValue(caster, mySpellCastDuration);
 
 float hasteAffectedValue(PlayerEntity caster, float value) {
-    var haste = (float) SpellPower.getHaste(caster);
+    var haste = (float) SpellPower.getHaste(caster, SpellSchools.FIRE);
     return value / haste;
 }
 ```
