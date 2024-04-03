@@ -43,7 +43,8 @@ public class SpellSchool {
     public Manage attributeManagement = Manage.INTERNAL;
 
     /**
-     * Status effect that boosts this spell school
+     * Status effect that boosts this spell school.
+     * Maybe left null, if status effect that boosts the respective attribute already exists.
      * (Like how vanilla Strength boosts attack damage)
      */
     @Nullable public final StatusEffect boostEffect;
@@ -58,6 +59,10 @@ public class SpellSchool {
      * Spells of this school deal this type of damage
      */
     public final RegistryKey<DamageType> damageType;
+
+    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute) {
+        this(id, color, damageType, attribute, null);
+    }
 
     public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect boostEffect) {
         this.id = id;
