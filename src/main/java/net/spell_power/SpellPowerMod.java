@@ -70,8 +70,7 @@ public class SpellPowerMod implements ModInitializer {
     public static void registerAttributes() {
         for (var entry : SpellPowerSecondaries.all.entrySet()) {
             var secondary = entry.getValue();
-            var id = secondary.id;
-            Registry.register(Registries.ATTRIBUTE, id, secondary.attribute);
+            Registry.register(Registries.ATTRIBUTE, secondary.id, secondary.attribute);
         }
         for(var school: SpellSchools.all()) {
             var id = school.id;

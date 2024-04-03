@@ -4,6 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.World;
 import net.spell_power.api.SpellPowerSecondaries;
 import net.spell_power.api.SpellSchools;
@@ -23,13 +25,13 @@ abstract class LivingEntityMixin extends Entity {
             require = 1, allow = 1, at = @At("RETURN")
     )
     private static void addAttributes(final CallbackInfoReturnable<DefaultAttributeContainer.Builder> info) {
-        for (var entry: SpellPowerSecondaries.all.entrySet()) {
-            var attribute = entry.getValue().attribute;
-            info.getReturnValue().add(attribute);
+        for (var entry : SpellPowerSecondaries.all.entrySet()) {
+            var secondary = entry.getValue();
+            info.getReturnValue().add(secondary.attribute);
         }
-        for (var entry: SpellSchools.all()) {
-            if (entry.attributeManagement.isInternal()) {
-                var attribute = entry.attribute;
+        for (var school: SpellSchools.all()) {
+            if (school.attributeManagement.isInternal()) {
+                var attribute = school.attribute;
                 info.getReturnValue().add(attribute);
             }
         }
