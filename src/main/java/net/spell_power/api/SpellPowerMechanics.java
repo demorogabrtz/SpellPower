@@ -28,6 +28,7 @@ public class SpellPowerMechanics {
             this.min = min;
             this.max = max;
             this.attribute = new CustomEntityAttribute(translationPrefix() + name, defaultValue, min, max, id);
+            this.attribute.setTracked(true);
             this.boostEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, 0x66ccff);
         }
     }
@@ -43,8 +44,4 @@ public class SpellPowerMechanics {
     public static final Entry CRITICAL_CHANCE = entry("critical_chance", PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE * 10);
     public static final Entry CRITICAL_DAMAGE = entry("critical_damage", PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE * 10);
     public static final Entry HASTE = entry("haste", PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE, PERCENT_ATTRIBUTE_BASELINE * 10);
-
-    static {
-        HASTE.attribute.setTracked(true);
-    }
 }
