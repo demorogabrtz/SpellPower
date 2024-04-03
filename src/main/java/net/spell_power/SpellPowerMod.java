@@ -5,7 +5,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.spell_power.api.SpellPowerSecondaries;
-import net.spell_power.api.SpellSchool;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
 import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
@@ -38,12 +37,10 @@ public class SpellPowerMod implements ModInitializer {
         attributesConfig.refresh();
         enchantmentConfig.refresh();
         effectRawId = attributesConfig.value.status_effect_raw_id_starts_at;
-        SpellSchools.all(); // Trigger static initialization
 
         for(var entry: SpellPowerSecondaries.all.entrySet()) {
             var secondary = entry.getValue();
             var id = secondary.id;
-            Registry.register(Registries.ATTRIBUTE, id, secondary.attribute);
 
             var uuid = "0e0ddd12-0646-42b7-8daf-36b4ccf524df";
             var bonus_per_stack = 0.1F;
@@ -68,6 +65,22 @@ public class SpellPowerMod implements ModInitializer {
         }
         enchantmentConfig.value.apply();
         Enchantments_SpellPower.attach();
+    }
+
+    public static void registerAttributes() {
+        for (var entry : SpellPowerSecondaries.all.entrySet()) {
+            var secondary = entry.getValue();
+            var id = secondary.id;
+            Registry.register(Registries.ATTRIBUTE, id, secondary.attribute);
+        }
+        for(var school: SpellSchools.all()) {
+            var id = school.id;
+            if (school.attributeManagement.isInternal()) {
+                if (school.attribute != null) {
+                    Registry.register(Registries.ATTRIBUTE, id, school.attribute);
+                }
+            }
+        }
     }
 
     public static void registerSchoolSpecificContent() {

@@ -7,6 +7,7 @@
     "DamageSourcesAccessor",
     "EnchantmentHelperMixin",
     "EnchantmentMixin",
+    "EntityAttributesMixin",
     "LivingEntityMixin",
     "RegistryMixin"
   ],
