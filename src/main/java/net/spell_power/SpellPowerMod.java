@@ -5,6 +5,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.spell_power.api.SpellPowerSecondaries;
+import net.spell_power.api.SpellSchool;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
 import net.spell_power.api.enchantment.Enchantments_SpellSecondaries;
@@ -72,16 +73,20 @@ public class SpellPowerMod implements ModInitializer {
     public static void registerSchoolSpecificContent() {
         for(var school: SpellSchools.all()) {
             var id = school.id;
-            if (Registries.ATTRIBUTE.get(id) == null) {
-                Registry.register(Registries.ATTRIBUTE, id, school.powerAttribute);
+            if (school.attributeManagement.isInternal()) {
+                if (school.attribute != null && Registries.ATTRIBUTE.get(id) == null) {
+                    Registry.register(Registries.ATTRIBUTE, id, school.attribute);
+                }
             }
-            if (school.powerEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
-                school.powerEffect.addAttributeModifier(
-                        school.powerAttribute,
-                        "0e0ddd12-0646-42b7-8daf-36b4ccf524df",
-                        attributesConfig.value.spell_power_effect_bonus_per_stack,
-                        EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-                Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.powerEffect);
+            if (school.powerEffectManagement.isInternal()) {
+                if (school.powerEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
+                    school.powerEffect.addAttributeModifier(
+                            school.attribute,
+                            "0e0ddd12-0646-42b7-8daf-36b4ccf524df",
+                            attributesConfig.value.spell_power_effect_bonus_per_stack,
+                            EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+                    Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.powerEffect);
+                }
             }
         }
     }

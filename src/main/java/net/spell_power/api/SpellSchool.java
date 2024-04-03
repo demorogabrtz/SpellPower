@@ -17,19 +17,25 @@ public class SpellSchool {
     // Given
     public final Identifier id;
     public final int color;
-    public final EntityAttribute powerAttribute;
+    public final EntityAttribute attribute;
+    public Manage attributeManagement = Manage.INTERNAL;
     @Nullable public final StatusEffect powerEffect;
+    public Manage powerEffectManagement = Manage.INTERNAL;
     public final RegistryKey<DamageType> damageType;
 
-    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute powerAttribute, @Nullable StatusEffect powerEffect) {
+    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect powerEffect) {
         this.id = id;
         this.color = color;
         this.damageType = damageType;
-        this.powerAttribute = powerAttribute;
+        this.attribute = attribute;
         this.powerEffect = powerEffect;
     }
 
     // Sources
+    public enum Manage {
+        INTERNAL, EXTERNAL;
+        public boolean isInternal() { return this == INTERNAL; }
+    }
     public enum Apply { ADD, MULTIPLY }
     public record QueryArgs(LivingEntity entity) { }
     public record Source(Apply apply, Function<QueryArgs, Double> function) { }

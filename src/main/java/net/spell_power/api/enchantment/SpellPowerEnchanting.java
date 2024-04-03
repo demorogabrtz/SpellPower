@@ -72,7 +72,7 @@ public class SpellPowerEnchanting {
         for (var entry: attributes.entries()) {
             var attribute = entry.getKey();
             for (var school: SpellSchools.all()) {
-                if (school.powerAttribute.equals(attribute)) {
+                if (school.attribute.equals(attribute)) {
                     schools.add(school);
                 }
             }
