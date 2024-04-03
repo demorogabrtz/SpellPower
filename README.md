@@ -18,6 +18,7 @@ This library introduces new Entity Attributes for powering magical abilities, fo
 - 💚 Healing
 - ⚡️ Lightning
 - 👻 Soul
+- and the ones you want to add via Java API :)
 
 (Note: the design intent is to stay native to Minecraft, but establish Warcraft like magic schools. So no classic 4 element schools are implemented, besides fire.)
 
@@ -285,6 +286,7 @@ In case you want an additional magic type, all of this can be done using the pro
 Example: Creating and registering "Blood" magic
 ```java
 public class BloodMagicMod {
+    // Creates school with the id of `spell_power:blood`, default namespace: `spell_power`
     public static final SpellSchool BLOOD = SpellSchools.register(SpellSchools.createMagic("blood", 0x7e1c07));
 }
 ``` 
@@ -299,3 +301,8 @@ public class EntityAttributesMixin {
     }
 }
 ```
+
+Assets to add for new schools:
+- Translation for school powering attribute (`"attribute.name.NAMESAPCE.MY_SCHOOL" : "My School Spell Power",`)
+- Translation for school boosting status effect (`"effect.NAMESAPCE.MY_SCHOOL" : "My School Power"`)
+- Icon for school boosting status effect (`textures/mob_effect/MY_SCHOOL.png`)
