@@ -116,15 +116,17 @@ Use the attributes by directly referencing their original instance. For example:
 ```java
 // ✅ 
 SpellSchools.FIRE.attribute;
-SpellSecondaries.CRITICAL_CHANCE.attribute;
-SpellSecondaries.CRITICAL_DAMAGE.attribute;
-SpellSecondaries.HASTE.attribute;
+SpellPowerSecondaries.CRITICAL_CHANCE.attribute;
+SpellPowerSecondaries.CRITICAL_DAMAGE.attribute;
+SpellPowerSecondaries.HASTE.attribute;
 ```
 
-Do not resolve them attribute registry, as they are not guaranteed to be registered at the runtime of your code.
+Alternatively you can resolve them from attribute registry.
+
+(Note: power attributes of schools from third party developers may not be found this way, depending on which point they perform the registration.) 
 
 ```java
-// 🚫
+// ✅
 Registries.ATTRIBUTE.get(new Identifier("spell_power:fire"));
 Registries.ATTRIBUTE.get(new Identifier("spell_power:critical_chance"));
 ```
@@ -143,7 +145,7 @@ Use the dedicated API (`SpellPower` class) to query spell power of an entity (on
 var result = SpellPower.getSpellPower(player, SpellSchools.FIRE);
 double value = result.randomValue(); // Randomly produces a critical strike or a base value (based on attributes)
 double forcedCritValue = result.forcedCriticalValue(); // Forces a critical strike value
-dobule forcedBaseValue = result.nonCriticalValue()(); // Forces a non-critical strike value
+dobule forcedBaseValue = result.nonCriticalValue(); // Forces a non-critical strike value
 ```
 
 The value received is an abstract number. Spell implementations should calculate with this value using an arbitrary formula. This typically means some linear scaling. For example:
@@ -163,13 +165,44 @@ player.getAttributeValue(SpellSchools.FIRE.attribute);
 Add attributes modifiers to your equipment items, to increase spell power of the player. For example:
 ```java
 // Given: `ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder`
-var fireSpellPower = 1;
+var fireSpellPower = 1; // + 1 Fire Spell Power
 builder.put(SpellSchools.FIRE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
         "Spell Power",
         fireSpellPower,
         EntityAttributeModifier.Operation.ADDITION
+    )
+);
+
+var haste = 0.01; // +10% Spell Haste
+builder.put(SpellPowerSecondaries.HASTE.attribute,
+    new EntityAttributeModifier(
+        SomeUUID,
+        "Spell Haste",
+        haste,
+        EntityAttributeModifier.Operation.MULTIPLY_BASE
+    )
+);
+
+
+var critChance = 0.01; // +1% Spell Crit Chance
+builder.put(SpellPowerSecondaries.CRITICAL_CHANCE.attribute,
+    new EntityAttributeModifier(
+        SomeUUID,
+        "Spell Crit Chance",
+        critChance,
+        EntityAttributeModifier.Operation.MULTIPLY_BASE
+    )
+);
+
+var critDamage = 0.5; // +50% Spell Crit Damage
+builder.put(SpellPowerSecondaries.CRITICAL_DAMAGE.attribute,
+    new EntityAttributeModifier(
+        SomeUUID,
+        "Crit Damage",
+        critDamage,
+        EntityAttributeModifier.Operation.MULTIPLY_BASE
     )
 );
 ```
@@ -218,7 +251,7 @@ If implementing completely custom spells and want to calculate with Spell Haste 
 To retrieve the Spell Haste value of a player, use the following API:
 ```java
 // Given `player` is a PlayerEntity
-double haste = SpellPower.getHaste(player, SpellSchools.FIRE);
+float haste = SpellPower.getHaste(player, SpellSchools.FIRE);
 ```
 
 This value represents a relative casting speed. For example:
@@ -235,5 +268,32 @@ float hasteAffectedSpellCastDuration = hasteAffectedValue(caster, mySpellCastDur
 float hasteAffectedValue(PlayerEntity caster, float value) {
     var haste = (float) SpellPower.getHaste(caster, SpellSchools.FIRE);
     return value / haste;
+}
+```
+
+## Creating Spell Schools
+
+To create a new spell school:
+1. Create `SpellSchool` instance
+2. Add its power sources (how damage, critical chance, critical damage, haste is calculated)
+3. Register the school
+
+In case you want an additional magic type, all of this can be done using the provided helper methods.
+
+Example: Creating and registering "Blood" magic
+```java
+public class BloodMagicMod {
+    public static final SpellSchool BLOOD = SpellSchools.register(SpellSchools.createMagic("blood", 0x7e1c07));
+}
+``` 
+
+Additionally, if you want to enable other developers to access the spell power attribute of your custom school, you need to trigger its registration within EntityAttributes static init.
+```java
+@Mixin(value = EntityAttributes.class)
+public class EntityAttributesMixin {
+    @Inject(method = "<clinit>", at = @At("TAIL"))
+    private static void static_tail_SpellPower(CallbackInfo ci) {
+        BloodMagicMod.BLOOD; // Trigger registration
+    }
 }
 ```

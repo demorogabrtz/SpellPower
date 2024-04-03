@@ -14,21 +14,57 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class SpellSchool {
-    // Given
+    /**
+     * ID of the:
+     * - Spell School itself
+     * - Powering Entity Attribute if managed internally
+     * - Powering Status Effect if managed internally
+     */
     public final Identifier id;
+
+    /**
+     * Theme color of the spell school.
+     * Format: 0xRRGGBB. For example, 0xff0000 is red, 0x00ff00 is green, 0x0000ff is blue.
+     * Used for:
+     * - Cast bar tinting
+     * - Boosting status effect color
+     */
     public final int color;
+
+    /**
+     * Entity attribute that powers this spell school
+     */
     public final EntityAttribute attribute;
+    /**
+     * Specifies who is responsible for registering the attribute
+     * - INTERNAL: Spell Power mod will register it
+     * - EXTERNAL: Your mod will register it
+     */
     public Manage attributeManagement = Manage.INTERNAL;
-    @Nullable public final StatusEffect powerEffect;
+
+    /**
+     * Status effect that boosts this spell school
+     * (Like how vanilla Strength boosts attack damage)
+     */
+    @Nullable public final StatusEffect boostEffect;
+    /**
+     * Specifies who is responsible for registering the status effect
+     * - INTERNAL: Spell Power mod will register it
+     * - EXTERNAL: Your mod will register it
+     */
     public Manage powerEffectManagement = Manage.INTERNAL;
+
+    /**
+     * Spells of this school deal this type of damage
+     */
     public final RegistryKey<DamageType> damageType;
 
-    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect powerEffect) {
+    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect boostEffect) {
         this.id = id;
         this.color = color;
         this.damageType = damageType;
         this.attribute = attribute;
-        this.powerEffect = powerEffect;
+        this.boostEffect = boostEffect;
     }
 
     // Sources

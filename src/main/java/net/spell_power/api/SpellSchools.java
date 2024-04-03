@@ -34,6 +34,7 @@ public class SpellSchools {
     }
 
     public static Set<SpellSchool> all() {
+        // Using linked hash set to preserve order
         return new LinkedHashSet<SpellSchool>(REGISTRY.values());
     }
 
@@ -46,7 +47,6 @@ public class SpellSchools {
     public static final SpellSchool HEALING = register(createMagic("healing", 0x66ff66));
     public static final SpellSchool LIGHTNING = register(createMagic("lightning", 0xffff99));
     public static final SpellSchool SOUL = register(createMagic("soul", 0x2dd4da));
-
 
     // School Creation
 

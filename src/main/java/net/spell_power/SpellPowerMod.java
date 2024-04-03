@@ -92,13 +92,13 @@ public class SpellPowerMod implements ModInitializer {
                 }
             }
             if (school.powerEffectManagement.isInternal()) {
-                if (school.powerEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
-                    school.powerEffect.addAttributeModifier(
+                if (school.boostEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
+                    school.boostEffect.addAttributeModifier(
                             school.attribute,
                             "0e0ddd12-0646-42b7-8daf-36b4ccf524df",
                             attributesConfig.value.spell_power_effect_bonus_per_stack,
                             EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-                    Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.powerEffect);
+                    Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.boostEffect);
                 }
             }
         }
