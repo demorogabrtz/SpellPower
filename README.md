@@ -176,7 +176,7 @@ builder.put(SpellSchools.FIRE.attribute,
     )
 );
 
-var haste = 0.01; // +10% Spell Haste
+var haste = 0.1; // +10% Spell Haste
 builder.put(SpellPowerMechanics.HASTE.attribute,
     new EntityAttributeModifier(
         SomeUUID,
