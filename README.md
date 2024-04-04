@@ -306,3 +306,5 @@ Assets to add for new schools:
 - Translation for school powering attribute (`"attribute.name.NAMESAPCE.MY_SCHOOL" : "My School Spell Power",`)
 - Translation for school boosting status effect (`"effect.NAMESAPCE.MY_SCHOOL" : "My School Power"`)
 - Icon for school boosting status effect (`textures/mob_effect/MY_SCHOOL.png`)
+
+Note: translation for commonly occurring magic types are already included.
