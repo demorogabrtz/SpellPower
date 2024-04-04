@@ -69,6 +69,7 @@ public class SpellSchools {
 
     public static SpellSchool createMagic(Identifier id, int color, EntityAttribute powerAttribute, StatusEffect powerEffect) {
         var school = new SpellSchool(
+                SpellSchool.Archetype.MAGIC,
                 id,
                 color,
                 DamageTypes.MAGIC, // TODO: Use custom damage type, SpellPowerMod.attributesConfig.value.use_vanilla_magic_damage_type

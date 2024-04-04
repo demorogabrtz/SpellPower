@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public class SpellSchool {
+    public enum Archetype { ARCHERY, MAGIC, MELEE }
+    public final Archetype archetype;
     /**
      * ID of the:
      * - Spell School itself
@@ -60,11 +62,12 @@ public class SpellSchool {
      */
     public final RegistryKey<DamageType> damageType;
 
-    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute) {
-        this(id, color, damageType, attribute, null);
+    public SpellSchool(Archetype archetype, Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute) {
+        this(archetype, id, color, damageType, attribute, null);
     }
 
-    public SpellSchool(Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect boostEffect) {
+    public SpellSchool(Archetype archetype, Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect boostEffect) {
+        this.archetype = archetype;
         this.id = id;
         this.color = color;
         this.damageType = damageType;
