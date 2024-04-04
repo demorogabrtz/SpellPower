@@ -90,6 +90,10 @@ public class SpellSchool {
     }
     private HashMap<Trait, ArrayList<Source>> sources = emptyTraits();
 
+    public void addSource(Trait trait, Apply apply, Function<QueryArgs, Double> function) {
+        addSource(trait, new Source(apply, function));
+    }
+
     public void addSource(Trait trait, Source source) {
         sources.get(trait).add(source);
         sources.get(trait).sort(Comparator.comparingInt(a -> a.apply.ordinal()));
