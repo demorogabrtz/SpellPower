@@ -1,9 +1,12 @@
 # 0.10.1
 
-Lots of breaking API Changes:
-- Replaced several crucial types, most notably: MagicSchool -> SpellSchool
-- Removed PHYSICAL_RANGED and PHYSICAL_MELEE schools
-- SpellSchools can now be added from external sources
+API Changes:
+- BREAKING! - Replaced several crucial types, most notably: MagicSchool -> SpellSchool
+- BREAKING! - Removed PHYSICAL_RANGED and PHYSICAL_MELEE schools
+- SpellSchools can now be added from external code
+- SpellSchool specifically, various trait calculation sources can now be added via API (for example: custom power/haste/crit sources)
+- EntityAttribute registration now happens at vanilla Attribute registry init, so custom AttributeResolver components are no longer neccesary to resolve attriubtes by ID
+- Optimized Spell Power related attribute container injections, now only PlayerEntity gets them, instead of LivingEntity (configurable) 
 
 Functional changes:
 - Update physical ranged school color

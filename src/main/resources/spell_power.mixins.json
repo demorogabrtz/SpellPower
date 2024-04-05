@@ -9,6 +9,7 @@
     "EnchantmentMixin",
     "EntityAttributesMixin",
     "LivingEntityMixin",
+    "PlayerEntityMixin",
     "RegistryMixin"
   ],
   "client": [

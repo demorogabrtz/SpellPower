@@ -93,15 +93,21 @@ public class SpellPowerMod implements ModInitializer {
             }
             if (school.powerEffectManagement.isInternal()) {
                 if (school.boostEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
+                    var config = attributesConfig.value.spell_power_effect;
                     school.boostEffect.addAttributeModifier(
                             school.attribute,
-                            "0e0ddd12-0646-42b7-8daf-36b4ccf524df",
-                            attributesConfig.value.spell_power_effect_bonus_per_stack,
+                            config.uuid,
+                            config.bonus_per_stack,
                             EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
                     Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.boostEffect);
                 }
             }
         }
+    }
+
+    public static AttributesConfig.AttributeScope attributeScopeOverride = null;
+    public static AttributesConfig.AttributeScope attributeScope() {
+        return attributeScopeOverride != null ? attributeScopeOverride : attributesConfig.value.attributes_container_injection_scope;
     }
 
     // No need for imperative registration. The presence of data file will automatically get them registered.

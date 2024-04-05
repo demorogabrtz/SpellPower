@@ -6,11 +6,15 @@ import net.spell_power.internals.SpellStatusEffect;
 import java.util.Map;
 
 public class AttributesConfig {
+    public enum AttributeScope {
+        LIVING_ENTITY, PLAYER_ENTITY
+    }
+    public AttributeScope attributes_container_injection_scope = AttributeScope.PLAYER_ENTITY;
     public boolean use_vanilla_magic_damage_type = true;
     public double base_spell_critical_chance_percentage = 5;
     public double base_spell_critical_damage_percentage = 50;
     public int status_effect_raw_id_starts_at = 730;
-    public float spell_power_effect_bonus_per_stack = 0.1F;
+    public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("0e0ddd12-0646-42b7-8daf-36b4ccf524df", 0.1F);
     public Map<String, SpellStatusEffect.Config> secondary_effects;
 
     public static AttributesConfig defaults() {
@@ -33,6 +37,9 @@ public class AttributesConfig {
             if (!secondary_effects.containsKey(entry.getKey())) {
                 return false;
             }
+        }
+        if (spell_power_effect == null) {
+            return false;
         }
 
         return true;
