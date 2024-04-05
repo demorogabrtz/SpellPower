@@ -14,7 +14,7 @@ public class AttributesConfig {
     public double base_spell_critical_chance_percentage = 5;
     public double base_spell_critical_damage_percentage = 50;
     public int status_effect_raw_id_starts_at = 730;
-    public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("0e0ddd12-0646-42b7-8daf-36b4ccf524df", 0.1F);
+    public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("446cf95e-be63-40d9-ad90-6cc388c08460", 0.1F);
     public Map<String, SpellStatusEffect.Config> secondary_effects;
 
     public static AttributesConfig defaults() {
