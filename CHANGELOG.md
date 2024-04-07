@@ -11,6 +11,7 @@ API Changes:
 Functional changes:
 - Update physical ranged school color
 - Improve the way how disabled Enchantments are handled
+- Fix enchantment config type requirement not working correctly for some cases
 
 # 0.9.19
 

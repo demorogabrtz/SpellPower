@@ -24,4 +24,8 @@ public enum ItemType {
         }
         return true;
     }
+
+    public boolean requiresMagic() {
+        return this == MAGICAL_ARMOR || this == MAGICAL_WEAPON;
+    }
 }

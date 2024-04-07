@@ -69,8 +69,14 @@ public class Enchantments_SpellPower {
             var enchantment = entry.getValue();
             EnchantmentRestriction.prohibit(enchantment, itemStack -> {
                 var itemTypeRequirement = enchantment.config.requires;
-                var typeMatches = itemTypeRequirement == null || itemTypeRequirement.matches(itemStack);
-                var schoolMatches = SchoolFilteredEnchantment.schoolsIntersect(enchantment.poweredSchools(), itemStack);
+                var typeMatches = true;
+                var schoolMatches = true;
+                if (itemTypeRequirement != null) {
+                    typeMatches = itemTypeRequirement.matches(itemStack);
+                    if (itemTypeRequirement.requiresMagic()) {
+                        schoolMatches = SchoolFilteredEnchantment.schoolsIntersect(enchantment.poweredSchools(), itemStack);
+                    }
+                }
                 return !typeMatches || !schoolMatches;
             });
         }
