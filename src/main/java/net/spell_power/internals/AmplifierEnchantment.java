@@ -33,6 +33,16 @@ public class AmplifierEnchantment extends Enchantment {
         this.config = config;
     }
 
+    @Override
+    public boolean isAvailableForEnchantedBookOffer() {
+        return super.isAvailableForEnchantedBookOffer() && config.enabled;
+    }
+
+    @Override
+    public boolean isAvailableForRandomSelection() {
+        return super.isAvailableForRandomSelection() && config.enabled;
+    }
+
     public int getMaxLevel() {
         if (!config.enabled) {
             return 0;
