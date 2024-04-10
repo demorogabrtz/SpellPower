@@ -99,7 +99,7 @@ repositories {
 ### Fabric workspace
 ```groovy
 dependencies {
-    modImplementation "maven.modrinth:spell-power:VERSION-fabric"
+    modImplementation "maven.modrinth:spell-power:VERSION"
 }
 ```
 In `fabric.mod.json` add a dependency to the mod:
