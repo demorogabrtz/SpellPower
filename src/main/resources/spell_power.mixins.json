@@ -10,7 +10,7 @@
     "EntityAttributesMixin",
     "LivingEntityMixin",
     "PlayerEntityMixin",
-    "RegistryMixin"
+    "StatusEffectsMixin"
   ],
   "client": [
   ],

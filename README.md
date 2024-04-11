@@ -287,17 +287,19 @@ Example: Creating and registering "Blood" magic
 ```java
 public class BloodMagicMod {
     // Creates school with the id of `spell_power:blood`, default namespace: `spell_power`
-    public static final SpellSchool BLOOD = SpellSchools.register(SpellSchools.createMagic("blood", 0x7e1c07));
+    public static final SpellSchool BLOOD = SpellSchools.createMagic("blood", 0x7e1c07);
 }
 ``` 
 
-Additionally, if you want to enable other developers to resolve the spell power attribute of your custom school from registry, during the initialisation of their mod, you need to trigger its registration within EntityAttributes static init.
+For regular `magic` schools, it is strongly recommended to perform the registration with the following mixin, to ensure:
+- Related attribute is generated and registered at the correct point
+- Related status effect is generated and registered at the correct point
 ```java
-@Mixin(value = EntityAttributes.class)
-public class EntityAttributesMixin {
+@Mixin(value = SpellSchools.class)
+public class SpellSchoolsMixin {
     @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void static_tail_SpellPower(CallbackInfo ci) {
-        BloodMagicMod.BLOOD; // Trigger registration
+    private static void static_tail_BloodMagic(CallbackInfo ci) {
+        SpellSchool.register(BloodMagicMod.BLOOD); // Trigger registration
     }
 }
 ```

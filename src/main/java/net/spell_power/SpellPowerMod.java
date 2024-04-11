@@ -83,14 +83,9 @@ public class SpellPowerMod implements ModInitializer {
         }
     }
 
-    public static void registerSchoolSpecificContent() {
+    public static void registerStatusEffects() {
         for(var school: SpellSchools.all()) {
             var id = school.id;
-            if (school.attributeManagement.isInternal()) {
-                if (school.attribute != null && Registries.ATTRIBUTE.get(id) == null) {
-                    Registry.register(Registries.ATTRIBUTE, id, school.attribute);
-                }
-            }
             if (school.powerEffectManagement.isInternal()) {
                 if (school.boostEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
                     var config = attributesConfig.value.spell_power_effect;
