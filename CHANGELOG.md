@@ -1,4 +1,4 @@
-# 0.10.1
+# 0.10.2
 
 API Changes:
 - BREAKING! - Replaced several crucial types, most notably: MagicSchool -> SpellSchool
@@ -6,7 +6,7 @@ API Changes:
 - SpellSchools can now be added from external code
 - SpellSchool specifically, various trait calculation sources can now be added via API (for example: custom power/haste/crit sources)
 - EntityAttribute registration now happens at vanilla Attribute registry init, so custom AttributeResolver components are no longer neccesary to resolve attriubtes by ID
-- Optimized Spell Power related attribute container injections, now only PlayerEntity gets them, instead of LivingEntity (configurable)
+- Optimized Spell Power related attribute container injections, (now it is possible to configure only PlayerEntity to get them, instead of LivingEntity)
 
 Functional changes:
 - Update physical ranged school color
