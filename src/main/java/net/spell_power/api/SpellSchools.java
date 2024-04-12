@@ -59,7 +59,6 @@ public class SpellSchools {
         return createMagic(new Identifier(DEFAULT_NAMESPACE, name.toLowerCase()), color);
     }
 
-
     public static SpellSchool createMagic(Identifier id, int color) {
         var powerEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, color);
         var translationPrefix = "attribute.name." + id.getNamespace() + ".";
@@ -93,12 +92,13 @@ public class SpellSchools {
     public static SpellSchool configureSpellHaste(SpellSchool school) {
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var value = query.entity().getAttributeValue(SpellPowerMechanics.HASTE.attribute); // 110
-            return (value / PERCENT_ATTRIBUTE_BASELINE);  // For example: 110/100 = 1.1
+            var rate = (value / PERCENT_ATTRIBUTE_BASELINE);    // For example: 110/100 = 1.1
+            return rate - 1;  // 0.1
         }));
         school.addSource(SpellSchool.Trait.HASTE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellPowerMechanics.HASTE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
-            return enchantment.amplified(0, level);
+            return enchantment.amplified(0, level);     // For example: 0.05 * 3 = 0.15
         }));
         return school;
     }
@@ -107,12 +107,12 @@ public class SpellSchools {
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query ->  {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_chance_percentage  // 5
                     + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_CHANCE.attribute);    // 20
-            return (value / PERCENT_ATTRIBUTE_BASELINE) - 1;  // For example: (125/100) - 1 = 0.25
+            return (value / PERCENT_ATTRIBUTE_BASELINE) - 1;    // For example: (125/100) - 1 = 0.25
         }));
         school.addSource(SpellSchool.Trait.CRIT_CHANCE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellPowerMechanics.CRITICAL_CHANCE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
-            return enchantment.amplified(0, level);
+            return enchantment.amplified(0, level);     // For example: 0.05 * 3 = 0.15
         }));
         return school;
     }
@@ -121,12 +121,13 @@ public class SpellSchools {
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var value = SpellPowerMod.attributesConfig.value.base_spell_critical_damage_percentage          // 50
                     + query.entity().getAttributeValue(SpellPowerMechanics.CRITICAL_DAMAGE.attribute);    // 110
-            return (value / PERCENT_ATTRIBUTE_BASELINE);    // For example: 160/100 = 1.6
+            var rate = (value / PERCENT_ATTRIBUTE_BASELINE);    // For example: 160/100 = 1.6
+            return rate - 1;    // 0.6
         }));
         school.addSource(SpellSchool.Trait.CRIT_DAMAGE, new SpellSchool.Source(SpellSchool.Apply.ADD, query -> {
             var enchantment = Enchantments_SpellPowerMechanics.CRITICAL_DAMAGE;
             var level = SpellPowerEnchanting.getEnchantmentLevelEquipmentSum(enchantment, query.entity());
-            return enchantment.amplified(0, level);
+            return enchantment.amplified(0, level);     // For example: 0.1 * 3 = 0.3
         }));
         return school;
     }
