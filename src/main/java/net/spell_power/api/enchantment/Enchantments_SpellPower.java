@@ -85,21 +85,4 @@ public class Enchantments_SpellPower {
     private static EnchantmentsConfig config() {
         return SpellPowerMod.enchantmentConfig.value;
     }
-
-    public static void attach() {
-        for(var school: SpellSchools.all()) {
-            var poweringEnchantments = all.entrySet().stream()
-                    .filter(entry -> entry.getValue().poweredSchools().contains(school))
-                    .map(Map.Entry::getValue)
-                    .toList();
-            school.addSource(SpellSchool.Trait.POWER, new SpellSchool.Source(SpellSchool.Apply.MULTIPLY, query -> {
-                double value = 0;
-                for (var enchantment: poweringEnchantments) {
-                    var level = SpellPowerEnchanting.getEnchantmentLevel(enchantment, query.entity(), null);
-                    value = enchantment.amplified(value, level);
-                }
-                return value;
-            }));
-        }
-    }
 }

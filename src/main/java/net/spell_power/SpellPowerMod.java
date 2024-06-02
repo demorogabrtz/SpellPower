@@ -5,12 +5,16 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.spell_power.api.SpellPowerMechanics;
+import net.spell_power.api.SpellSchool;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
 import net.spell_power.api.enchantment.Enchantments_SpellPowerMechanics;
+import net.spell_power.api.enchantment.SpellPowerEnchanting;
 import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
+
+import java.util.Map;
 
 public class SpellPowerMod implements ModInitializer {
     public static final String ID = "spell_power";
@@ -65,9 +69,29 @@ public class SpellPowerMod implements ModInitializer {
             Registry.register(Registries.ENCHANTMENT, entry.getKey(), entry.getValue());
         }
         enchantmentConfig.value.apply();
-        Enchantments_SpellPower.attach();
+        attachEnchantmentsToSchools();
     }
 
+    private void attachEnchantmentsToSchools() {
+        for(var school: SpellSchools.all()) {
+            var poweringEnchantments = Enchantments_SpellPower.all.entrySet().stream()
+                    .filter(entry -> entry.getValue().poweredSchools().contains(school))
+                    .map(Map.Entry::getValue)
+                    .toList();
+            school.addSource(SpellSchool.Trait.POWER, new SpellSchool.Source(SpellSchool.Apply.MULTIPLY, query -> {
+                double value = 0;
+                for (var enchantment: poweringEnchantments) {
+                    var level = SpellPowerEnchanting.getEnchantmentLevel(enchantment, query.entity(), null);
+                    value = enchantment.amplified(value, level);
+                }
+                return value;
+            }));
+        }
+    }
+
+    /**
+     * For internal use only!
+     */
     public static void registerAttributes() {
         for (var entry : SpellPowerMechanics.all.entrySet()) {
             var secondary = entry.getValue();
@@ -83,6 +107,9 @@ public class SpellPowerMod implements ModInitializer {
         }
     }
 
+    /**
+     * For internal use only!
+     */
     public static void registerStatusEffects() {
         for(var school: SpellSchools.all()) {
             var id = school.id;
