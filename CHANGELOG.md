@@ -1,3 +1,7 @@
+# 0.10.3 
+
+- Update Fabric Loader to 15+ for embedded MixinExtras
+
 # 0.10.2
 
 API Changes:
