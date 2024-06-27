@@ -18,6 +18,10 @@ public class SchoolFilteredEnchantment extends AmplifierEnchantment {
         return schools;
     }
 
+    public void setPoweredSchools(Set<SpellSchool> schools) {
+        this.schools = schools;
+    }
+
     public SchoolFilteredEnchantment(Rarity weight, Operation operation, EnchantmentsConfig.PowerEnchantmentConfig config, Set<SpellSchool> schools, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
         super(weight, operation, config, type, slotTypes);
         this.schools = schools;
