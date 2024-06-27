@@ -73,6 +73,16 @@ In case of school limited enchantments the atttribute present must be relevant (
 
 (All enchantments are fully configurable, and come with descriptions)
 
+To enable applying these enchantments to any item, add the item the one or more of the following tags:
+- `spell_power:enchant_critical_damage`
+- `spell_power:enchant_critical_chance`
+- `spell_power:enchant_haste`
+- `spell_power:enchant_spell_power_energize`
+- `spell_power:enchant_spell_power_generic`
+- `spell_power:enchant_spell_power_soulfrost`
+- `spell_power:enchant_spell_power_specialized`
+- `spell_power:enchant_spell_power_sunfire`
+
 # 🔧 Configuration
 
 **Server side** configuration can be found in the `config` directory, after running the game with the mod installed.

@@ -32,7 +32,7 @@ public class SpellPowerMod implements ModInitializer {
             .builder()
             .setDirectory(ID)
             .sanitize(true)
-            .schemaVersion(3)
+            .schemaVersion(4)
             .build();
 
     private static int effectRawId = 730;

@@ -4,7 +4,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
-import net.spell_power.api.SpellSchool;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.config.EnchantmentsConfig;
 import net.spell_power.internals.SchoolFilteredEnchantment;
@@ -25,7 +24,8 @@ public class Enchantments_SpellPower {
             config().spell_power,
             Set.of(SpellSchools.ARCANE, SpellSchools.FIRE, SpellSchools.FROST, SpellSchools.HEALING, SpellSchools.LIGHTNING, SpellSchools.SOUL),
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_spell_power_generic"));
 
     public static final String soulfrostName = "soulfrost";
     public static final Identifier soulfrostId = new Identifier(SpellPowerMod.ID, soulfrostName);
@@ -35,7 +35,8 @@ public class Enchantments_SpellPower {
             config().soulfrost,
             Set.of(SpellSchools.SOUL, SpellSchools.FROST),
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_spell_power_soulfrost"));
 
     public static final String sunfireName = "sunfire";
     public static final Identifier sunfireId = new Identifier(SpellPowerMod.ID, sunfireName);
@@ -45,7 +46,8 @@ public class Enchantments_SpellPower {
             config().sunfire,
             Set.of(SpellSchools.ARCANE, SpellSchools.FIRE),
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_spell_power_sunfire"));
 
     public static final String energizeName = "energize";
     public static final Identifier energizeId = new Identifier(SpellPowerMod.ID, energizeName);
@@ -55,7 +57,8 @@ public class Enchantments_SpellPower {
             config().energize,
             Set.of(SpellSchools.HEALING, SpellSchools.LIGHTNING),
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_spell_power_energize"));
 
     public static final Map<Identifier, SchoolFilteredEnchantment> all;
     static {
@@ -68,15 +71,8 @@ public class Enchantments_SpellPower {
         for(var entry: all.entrySet()) {
             var enchantment = entry.getValue();
             EnchantmentRestriction.prohibit(enchantment, itemStack -> {
-                var itemTypeRequirement = enchantment.config.requires;
-                var typeMatches = true;
-                var schoolMatches = true;
-                if (itemTypeRequirement != null) {
-                    typeMatches = itemTypeRequirement.matches(itemStack);
-                    if (itemTypeRequirement.requiresMagic()) {
-                        schoolMatches = SchoolFilteredEnchantment.schoolsIntersect(enchantment.poweredSchools(), itemStack);
-                    }
-                }
+                var typeMatches = enchantment.matchesRequiredTag(itemStack);
+                var schoolMatches = !enchantment.requiresRelatedAttributes() || SchoolFilteredEnchantment.schoolsIntersect(enchantment.poweredSchools(), itemStack);
                 return !typeMatches || !schoolMatches;
             });
         }

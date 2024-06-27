@@ -25,7 +25,8 @@ public class Enchantments_SpellPowerMechanics {
             ADD,
             config().critical_chance,
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_critical_chance"));
 
     public static final Identifier criticalDamageId = new Identifier(SpellPowerMod.ID, SpellPowerMechanics.CRITICAL_DAMAGE.name);
     public static final AmplifierEnchantment CRITICAL_DAMAGE = new AmplifierEnchantment(
@@ -33,7 +34,8 @@ public class Enchantments_SpellPowerMechanics {
             ADD,
             config().critical_damage,
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_critical_damage"));
 
     public static final Identifier hasteId = new Identifier(SpellPowerMod.ID, SpellPowerMechanics.HASTE.name);
     public static final AmplifierEnchantment HASTE = new AmplifierEnchantment(
@@ -41,7 +43,8 @@ public class Enchantments_SpellPowerMechanics {
             ADD,
             config().haste,
             BREAKABLE,
-            EquipmentSlot.values());
+            EquipmentSlot.values())
+            .requireTag(new Identifier(SpellPowerMod.ID, "enchant_haste"));
 
     // Resistance
 
@@ -66,8 +69,7 @@ public class Enchantments_SpellPowerMechanics {
         for(var entry: secondaries.entrySet()) {
             var enchantment = entry.getValue();
             EnchantmentRestriction.prohibit(enchantment, itemStack -> {
-                var itemTypeRequirement = enchantment.config.requires;
-                var typeMatches = itemTypeRequirement == null || itemTypeRequirement.matches(itemStack);
+                var typeMatches = enchantment.matchesRequiredTag(itemStack);
                 return !typeMatches;
             });
         }

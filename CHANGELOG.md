@@ -1,3 +1,15 @@
+# 0.11.0
+
+- Rework enchantment conditioning, now based on item tags `spell_power:`
+  - `enchant_critical_damage`
+  - `enchant_critical_chance`
+  - `enchant_haste`
+  - `enchant_spell_power_energize`
+  - `enchant_spell_power_generic`
+  - `enchant_spell_power_soulfrost`
+  - `enchant_spell_power_specialized`
+  - `enchant_spell_power_sunfire`
+
 # 0.10.3 
 
 - Update Fabric Loader to 15+ for embedded MixinExtras

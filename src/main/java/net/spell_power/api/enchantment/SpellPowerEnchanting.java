@@ -34,16 +34,19 @@ public class SpellPowerEnchanting {
         }
     }
 
+    @Deprecated
     public static void registerArmor(ArmorItem item) {
         armor.add(item);
     }
 
+    @Deprecated
     public static boolean isArmorRegistered(Item item) {
         return armor.contains(item);
     }
 
     private static final ArrayList<Function<ItemStack, Boolean>> weaponConditions = new ArrayList<>();
 
+    @Deprecated
     public static void allowForWeapon(Function<ItemStack, Boolean> condition) {
         weaponConditions.add(condition);
     }

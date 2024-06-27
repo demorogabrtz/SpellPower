@@ -3,16 +3,23 @@ package net.spell_power.internals;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
-import net.spell_power.config.EnchantmentsConfig;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.tinyconfig.models.EnchantmentConfig;
+import org.jetbrains.annotations.Nullable;
 
 public class AmplifierEnchantment extends Enchantment {
     public Operation operation;
+    @Nullable
+    protected Identifier tagId;
 
     public enum Operation {
         ADD, MULTIPLY;
     }
 
-    public EnchantmentsConfig.ExtendedEnchantmentConfig config;
+    public EnchantmentConfig config;
 
     public double amplified(double value, int level) {
         switch (operation) {
@@ -27,10 +34,15 @@ public class AmplifierEnchantment extends Enchantment {
         return 0F;
     }
 
-    public AmplifierEnchantment(Rarity weight, Operation operation, EnchantmentsConfig.ExtendedEnchantmentConfig config, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+    public AmplifierEnchantment(Rarity weight, Operation operation, EnchantmentConfig config, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
         super(weight, type, slotTypes);
         this.operation = operation;
         this.config = config;
+    }
+
+    public AmplifierEnchantment requireTag(Identifier tagId) {
+        this.tagId = tagId;
+        return this;
     }
 
     @Override
@@ -62,5 +74,12 @@ public class AmplifierEnchantment extends Enchantment {
     protected boolean canAccept(Enchantment other) {
         var otherIsRanged = other.target == EnchantmentTarget.BOW || other.target == EnchantmentTarget.CROSSBOW;
         return !otherIsRanged && super.canAccept(other);
+    }
+
+    public boolean matchesRequiredTag(ItemStack stack) {
+        if (tagId == null) {
+            return true;
+        }
+        return stack.isIn(TagKey.of(RegistryKeys.ITEM, tagId));
     }
 }
