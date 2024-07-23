@@ -144,6 +144,7 @@ public class SpellSchools {
         return REGISTRY.get(id);
     }
 
+    @Deprecated
     public static class IdTypeAdapter extends TypeAdapter<SpellSchool> {
         @Override
         public void write(JsonWriter jsonWriter, SpellSchool school) throws IOException {

@@ -1,11 +1,13 @@
 package net.spell_power.api;
 
+import com.google.gson.annotations.JsonAdapter;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import net.spell_power.api.misc.SpellSchoolJSONAdapter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.function.Function;
 
+@JsonAdapter(SpellSchoolJSONAdapter.class)
 public class SpellSchool {
     public enum Archetype { ARCHERY, MAGIC, MELEE }
     public final Archetype archetype;

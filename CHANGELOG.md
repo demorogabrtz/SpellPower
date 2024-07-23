@@ -1,3 +1,7 @@
+# 0.11.1
+
+- Attempt to fix SpellSchool serialization
+
 # 0.11.0
 
 - Rework enchantment conditioning, now based on item tags `spell_power:`
