@@ -1,3 +1,7 @@
+# 1.0.0
+
+- Update to Minecraft 1.21.0
+
 # 0.12.0
 
 - Add school specific damage types
