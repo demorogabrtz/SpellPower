@@ -7,6 +7,8 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
 import net.spell_power.api.enchantment.Enchantments_SpellPowerMechanics;
@@ -46,17 +48,21 @@ public class SpellSchools {
 
     // Predefined Spell Schools
 
-    public static final SpellSchool ARCANE = register(createMagic("arcane", 0xff66ff));
-    public static final SpellSchool FIRE = register(createMagic("fire", 0xff3300));
-    public static final SpellSchool FROST = register(createMagic("frost", 0xccffff));
-    public static final SpellSchool HEALING = register(createMagic("healing", 0x66ff66));
-    public static final SpellSchool LIGHTNING = register(createMagic("lightning", 0xffff99));
-    public static final SpellSchool SOUL = register(createMagic("soul", 0x2dd4da));
+    public static final SpellSchool ARCANE = register(createMagic("arcane", true, 0xff66ff));
+    public static final SpellSchool FIRE = register(createMagic("fire", true, 0xff3300));
+    public static final SpellSchool FROST = register(createMagic("frost", true, 0xccffff));
+    public static final SpellSchool HEALING = register(createMagic("healing", true, 0x66ff66));
+    public static final SpellSchool LIGHTNING = register(createMagic("lightning", true, 0xffff99));
+    public static final SpellSchool SOUL = register(createMagic("soul", true, 0x2dd4da));
 
     // School Creation
 
     public static SpellSchool createMagic(String name, int color) {
         return createMagic(new Identifier(DEFAULT_NAMESPACE, name.toLowerCase()), color);
+    }
+
+    public static SpellSchool createMagic(String name, boolean customDamageType, int color) {
+        return createMagic(new Identifier(DEFAULT_NAMESPACE, name.toLowerCase()), customDamageType, color);
     }
 
     public static SpellSchool createMagic(Identifier id, int color) {
@@ -66,12 +72,24 @@ public class SpellSchools {
         return createMagic(id, color, attribute, powerEffect);
     }
 
+    public static SpellSchool createMagic(Identifier id, boolean customDamageType, int color) {
+        var powerEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, color);
+        var translationPrefix = "attribute.name." + id.getNamespace() + ".";
+        var attribute = new CustomEntityAttribute(translationPrefix + id.getPath(), 0, 0, 2048, id).setTracked(true);
+        return createMagic(id, color, customDamageType, attribute, powerEffect);
+    }
+
+    @Deprecated
     public static SpellSchool createMagic(Identifier id, int color, EntityAttribute powerAttribute, StatusEffect powerEffect) {
+        return createMagic(id, color, false, powerAttribute, powerEffect);
+    }
+
+    public static SpellSchool createMagic(Identifier id, int color, boolean customDamageType, EntityAttribute powerAttribute, StatusEffect powerEffect) {
         var school = new SpellSchool(
                 SpellSchool.Archetype.MAGIC,
                 id,
                 color,
-                DamageTypes.MAGIC, // TODO: Use custom damage type, SpellPowerMod.attributesConfig.value.use_vanilla_magic_damage_type
+                customDamageType ? RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id) : DamageTypes.MAGIC,
                 powerAttribute,
                 powerEffect);
         return configureAsMagic(school, powerAttribute);

@@ -1,3 +1,7 @@
+# 0.12.0
+
+- Add school specific damage types
+
 # 0.11.1
 
 - Attempt to fix SpellSchool serialization
