@@ -1,6 +1,7 @@
 # 0.12.0
 
 - Add school specific damage types
+- Add generic spell resistance attribute
 
 # 0.11.1
 

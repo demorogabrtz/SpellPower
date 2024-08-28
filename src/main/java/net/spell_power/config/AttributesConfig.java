@@ -16,6 +16,7 @@ public class AttributesConfig {
     public int status_effect_raw_id_starts_at = 730;
     public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("446cf95e-be63-40d9-ad90-6cc388c08460", 0.1F);
     public Map<String, SpellStatusEffect.Config> secondary_effects;
+    public float resistance_reduction_cap = 0.75F;
 
     public static AttributesConfig defaults() {
         var config = new AttributesConfig();

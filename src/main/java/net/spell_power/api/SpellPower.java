@@ -89,7 +89,6 @@ public class SpellPower {
         }
     }
 
-
     public static Result getSpellPower(SpellSchool school, LivingEntity entity) {
         var args = new SpellSchool.QueryArgs(entity);
         return new Result(

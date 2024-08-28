@@ -5,6 +5,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.spell_power.api.SpellPowerMechanics;
+import net.spell_power.api.SpellResistance;
 import net.spell_power.api.SpellSchool;
 import net.spell_power.api.SpellSchools;
 import net.spell_power.api.enchantment.Enchantments_SpellPower;
@@ -105,6 +106,9 @@ public class SpellPowerMod implements ModInitializer {
                 }
             }
         }
+        for(var resistance: SpellResistance.Attributes.all) {
+            resistance.register();
+        }
     }
 
     /**
@@ -131,18 +135,4 @@ public class SpellPowerMod implements ModInitializer {
     public static AttributesConfig.AttributeScope attributeScope() {
         return attributeScopeOverride != null ? attributeScopeOverride : attributesConfig.value.attributes_container_injection_scope;
     }
-
-    // No need for imperative registration. The presence of data file will automatically get them registered.
-//    private record DamageTypeEntry(Identifier id, RegistryKey<DamageType> key) { }
-//    public static void registerDamageTypes(Registerable<DamageType> registry) {
-//        var damageTypeEntries = Arrays.stream(MagicSchool.values())
-//                .map(MagicSchool::damageTypeId)
-//                .distinct()
-//                .map(id -> {
-//                    return new DamageTypeEntry(id, RegistryKey.of(RegistryKeys.DAMAGE_TYPE, id));
-//                }).toList();
-//        for(var entry: damageTypeEntries) {
-//            registry.register(entry.key(), new DamageType("player", 0.1F));
-//        }
-//    }
 }
