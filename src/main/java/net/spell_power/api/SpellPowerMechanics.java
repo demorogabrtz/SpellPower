@@ -1,11 +1,16 @@
 package net.spell_power.api;
 
+import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
 import net.spell_power.internals.CustomEntityAttribute;
 import net.spell_power.internals.SpellStatusEffect;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -21,15 +26,30 @@ public class SpellPowerMechanics {
         public final float defaultValue, min, max;
         public final CustomEntityAttribute attribute;
         public final StatusEffect boostEffect;
+
+        @Nullable
+        public RegistryEntry<EntityAttribute> attributeEntry;
+
+        @Nullable
+        public RegistryEntry<StatusEffect> effectEntry;
+
         public Entry(String name, float defaultValue, float min, float max) {
             this.name = name;
-            this.id = new Identifier(SpellPowerMod.ID, name);
+            this.id = Identifier.of(SpellPowerMod.ID, name);
             this.defaultValue = defaultValue;
             this.min = min;
             this.max = max;
             this.attribute = new CustomEntityAttribute(translationPrefix() + name, defaultValue, min, max, id);
             this.attribute.setTracked(true);
             this.boostEffect = new SpellStatusEffect(StatusEffectCategory.BENEFICIAL, 0x66ccff);
+        }
+
+        public void registerAttribute() {
+            attributeEntry = Registry.registerReference(Registries.ATTRIBUTE, id, attribute);
+        }
+
+        public void registerEffect() {
+            effectEntry = Registry.registerReference(Registries.STATUS_EFFECT, id, boostEffect);
         }
     }
 

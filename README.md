@@ -138,8 +138,8 @@ Alternatively you can resolve them from attribute registry.
 
 ```java
 // ✅
-Registries.ATTRIBUTE.get(new Identifier("spell_power:fire"));
-Registries.ATTRIBUTE.get(new Identifier("spell_power:critical_chance"));
+Registries.ATTRIBUTE.get(Identifier.of("spell_power:fire"));
+Registries.ATTRIBUTE.get(Identifier.of("spell_power:critical_chance"));
 ```
 
 ### Query Spell Power

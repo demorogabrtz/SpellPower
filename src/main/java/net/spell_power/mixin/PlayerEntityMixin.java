@@ -21,11 +21,11 @@ public class PlayerEntityMixin {
         if (SpellPowerMod.attributeScope() == AttributesConfig.AttributeScope.PLAYER_ENTITY) {
             for (var entry : SpellPowerMechanics.all.entrySet()) {
                 var secondary = entry.getValue();
-                info.getReturnValue().add(secondary.attribute);
+                info.getReturnValue().add(secondary.attributeEntry);
             }
             for (var school: SpellSchools.all()) {
-                if (school.attributeManagement.isInternal()) {
-                    var attribute = school.attribute;
+                if (school.ownsAttribute()) {
+                    var attribute = school.attributeEntry;
                     info.getReturnValue().add(attribute);
                 }
             }

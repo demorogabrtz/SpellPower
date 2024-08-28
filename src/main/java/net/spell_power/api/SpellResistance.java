@@ -6,6 +6,8 @@ import net.minecraft.entity.attribute.EntityAttribute;
 
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
@@ -21,7 +23,7 @@ public class SpellResistance {
         public static final ArrayList<Entry> all = new ArrayList<>();
 
         public static Entry entry(String name, String tagName, Curve curve, double maxValue, boolean tracked) {
-            return entry("resistance." + name, new Identifier(SpellPowerMod.ID, tagName), curve, maxValue, tracked);
+            return entry("resistance." + name, Identifier.of(SpellPowerMod.ID, tagName), curve, maxValue, tracked);
         }
         public static Entry entry(String name, Identifier damageTagId, Curve curve, double maxValue, boolean tracked) {
             var tag = TagKey.of(RegistryKeys.DAMAGE_TYPE, damageTagId);
@@ -41,7 +43,7 @@ public class SpellResistance {
             public Curve curve;
 
             @Nullable
-            public RegistryEntry<EntityAttribute> entry;
+            public RegistryEntry<EntityAttribute> attributeEntry;
 
             public Entry(String name, TagKey<DamageType> tag, Curve curve, double maxValue, boolean tracked) {
                 this.id = Identifier.of(SpellPowerMod.ID, name);
@@ -56,8 +58,8 @@ public class SpellResistance {
                 this.damageTypes = tag;
             }
 
-            public void register() {
-                // entry = Registry.registerReference(Registries.ATTRIBUTE, id, attribute);
+            public void registerAttribute() {
+                attributeEntry = Registry.registerReference(Registries.ATTRIBUTE, id, attribute);
             }
         }
 
@@ -67,8 +69,8 @@ public class SpellResistance {
     public static double resist(LivingEntity target, double damage, DamageSource source) {
         double modifier = 1;
         for (var resistance : Attributes.all) {
-            if (target.getAttributes().hasAttribute(resistance.attribute) && source.isIn(resistance.damageTypes)) {
-                var value = target.getAttributeValue(resistance.attribute);
+            if (target.getAttributes().hasAttribute(resistance.attributeEntry) && source.isIn(resistance.damageTypes)) {
+                var value = target.getAttributeValue(resistance.attributeEntry);
                 var maxValue = resistance.maxValue;
                 switch (resistance.curve) {
                     case LINEAR -> {

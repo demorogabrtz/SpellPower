@@ -5,7 +5,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.spell_power.api.misc.SpellSchoolJSONAdapter;
 import org.jetbrains.annotations.Nullable;
@@ -37,36 +40,27 @@ public class SpellSchool {
     public final int color;
 
     /**
-     * Entity attribute that powers this spell school
+     * Internally managed entity attribute that boosts this spell school.
      */
-    public final EntityAttribute attribute;
-    /**
-     * Specifies who is responsible for registering the attribute
-     * - INTERNAL: Spell Power mod will register it
-     * - EXTERNAL: Your mod will register it
-     */
-    public Manage attributeManagement = Manage.INTERNAL;
+    @Nullable private final EntityAttribute ownedAttribute;
 
     /**
      * Status effect that boosts this spell school.
      * Maybe left null, if status effect that boosts the respective attribute already exists.
      * (Like how vanilla Strength boosts attack damage)
      */
-    @Nullable public final StatusEffect boostEffect;
-    /**
-     * Specifies who is responsible for registering the status effect
-     * - INTERNAL: Spell Power mod will register it
-     * - EXTERNAL: Your mod will register it
-     */
-    public Manage powerEffectManagement = Manage.INTERNAL;
+    @Nullable public final StatusEffect ownedBoostEffect;
 
     /**
      * Spells of this school deal this type of damage
      */
     public final RegistryKey<DamageType> damageType;
 
-    public SpellSchool(Archetype archetype, Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute) {
-        this(archetype, id, color, damageType, attribute, null);
+    @Nullable public RegistryEntry<EntityAttribute> attributeEntry;
+
+    public SpellSchool(Archetype archetype, Identifier id, int color, RegistryKey<DamageType> damageType, RegistryEntry<EntityAttribute> attributeEntry) {
+        this(archetype, id, color, damageType, null, null);
+        this.attributeEntry = attributeEntry;
     }
 
     public SpellSchool(Archetype archetype, Identifier id, int color, RegistryKey<DamageType> damageType, EntityAttribute attribute, @Nullable StatusEffect boostEffect) {
@@ -74,8 +68,22 @@ public class SpellSchool {
         this.id = id;
         this.color = color;
         this.damageType = damageType;
-        this.attribute = attribute;
-        this.boostEffect = boostEffect;
+        this.ownedAttribute = attribute;
+        this.ownedBoostEffect = boostEffect;
+    }
+
+    public void registerAttribute() {
+        if (ownedAttribute != null) {
+            attributeEntry = Registry.registerReference(Registries.ATTRIBUTE, id, ownedAttribute);
+        }
+    }
+
+    public RegistryEntry<EntityAttribute> getAttributeEntry() {
+        return attributeEntry;
+    }
+
+    public boolean ownsAttribute() {
+        return ownedAttribute != null;
     }
 
     // Sources

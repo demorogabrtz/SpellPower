@@ -7,6 +7,6 @@ import net.spell_power.SpellPowerMod;
 
 public class SpellPowerTags {
     public static class DamageType {
-        public static final TagKey<net.minecraft.entity.damage.DamageType> ALL = TagKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier(SpellPowerMod.ID, "all"));
+        public static final TagKey<net.minecraft.entity.damage.DamageType> ALL = TagKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(SpellPowerMod.ID, "all"));
     }
 }
