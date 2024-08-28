@@ -107,7 +107,7 @@ public class SpellPowerMod implements ModInitializer {
             }
         }
         for(var resistance: SpellResistance.Attributes.all) {
-            resistance.register();
+            Registry.register(Registries.ATTRIBUTE, resistance.id, resistance.attribute);
         }
     }
 

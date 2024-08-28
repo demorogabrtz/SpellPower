@@ -6,8 +6,6 @@ import net.minecraft.entity.attribute.EntityAttribute;
 
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
@@ -23,7 +21,7 @@ public class SpellResistance {
         public static final ArrayList<Entry> all = new ArrayList<>();
 
         public static Entry entry(String name, String tagName, Curve curve, double maxValue, boolean tracked) {
-            return entry(name, Identifier.of(SpellPowerMod.ID, tagName), curve, maxValue, tracked);
+            return entry("resistance." + name, new Identifier(SpellPowerMod.ID, tagName), curve, maxValue, tracked);
         }
         public static Entry entry(String name, Identifier damageTagId, Curve curve, double maxValue, boolean tracked) {
             var tag = TagKey.of(RegistryKeys.DAMAGE_TYPE, damageTagId);
@@ -59,17 +57,17 @@ public class SpellResistance {
             }
 
             public void register() {
-                entry = Registry.registerReference(Registries.ATTRIBUTE, id, attribute);
+                // entry = Registry.registerReference(Registries.ATTRIBUTE, id, attribute);
             }
         }
 
-        public static final Entry GENERIC = entry("resistance.generic", "all", Curve.LINEAR, 100, true);
+        public static final Entry GENERIC = entry("generic", "all", Curve.LINEAR, 100, true);
     }
 
     public static double resist(LivingEntity target, double damage, DamageSource source) {
         double modifier = 1;
         for (var resistance : Attributes.all) {
-            if (source.isIn(resistance.damageTypes)) {
+            if (target.getAttributes().hasAttribute(resistance.attribute) && source.isIn(resistance.damageTypes)) {
                 var value = target.getAttributeValue(resistance.attribute);
                 var maxValue = resistance.maxValue;
                 switch (resistance.curve) {
@@ -84,6 +82,7 @@ public class SpellResistance {
                 }
             }
         }
+        // System.out.println("RESIST Damage: " + damage + " Modifier: " + modifier);
         return damage * modifier;
     }
 }
