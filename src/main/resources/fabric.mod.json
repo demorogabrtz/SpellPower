@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "net.spell_power.SpellPowerMod"
+    ],
+    "fabric-datagen": [
+      "net.spell_power.data_gen.SpellPowerModDataGenerator"
     ]
   },
   "mixins": [

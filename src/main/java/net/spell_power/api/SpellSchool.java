@@ -87,10 +87,6 @@ public class SpellSchool {
     }
 
     // Sources
-    public enum Manage {
-        INTERNAL, EXTERNAL;
-        public boolean isInternal() { return this == INTERNAL; }
-    }
     public enum Apply { ADD, MULTIPLY }
     public record QueryArgs(LivingEntity entity) { }
     public record Source(Apply apply, Function<QueryArgs, Double> function) { }
