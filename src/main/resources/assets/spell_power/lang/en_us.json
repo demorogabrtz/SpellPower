@@ -1,4 +1,5 @@
 {
+  "attribute.name.spell_power.generic" : "Spell Power",
   "attribute.name.spell_power.arcane" : "Arcane Spell Power",
   "attribute.name.spell_power.fire" : "Fire Spell Power",
   "attribute.name.spell_power.frost" : "Frost Spell Power",

@@ -8,7 +8,10 @@
     "EntityAttributesMixin",
     "LivingEntityMixin",
     "PlayerEntityMixin",
-    "StatusEffectsMixin"
+    "StatusEffectsMixin",
+    "attributes.CrossAttributeContainer",
+    "attributes.CrossDefaultAttributeContainer",
+    "attributes.CrossEntityAttributeInstance"
   ],
   "client": [
   ],

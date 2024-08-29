@@ -4,9 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.spell_power.api.SpellPowerMechanics;
-import net.spell_power.api.SpellResistance;
-import net.spell_power.api.SpellSchools;
+import net.spell_power.api.*;
 import net.spell_power.config.AttributesConfig;
 import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
@@ -65,11 +63,16 @@ public class SpellPowerMod implements ModInitializer {
         for (var entry : SpellPowerMechanics.all.entrySet()) {
             entry.getValue().registerAttribute();
         }
-        for(var school: SpellSchools.all()) {
-            school.registerAttribute();
-        }
         for(var resistance: SpellResistance.Attributes.all) {
             resistance.registerAttribute();
+        }
+
+        var genericSpellSchool = SpellSchools.GENERIC;
+        for(var school: SpellSchools.all()) {
+            school.registerAttribute();
+            if (school != genericSpellSchool && school.ownsAttribute()) {
+                CrossFunctionalAttributes.power(school.attributeEntry, genericSpellSchool.attributeEntry);
+            }
         }
     }
 

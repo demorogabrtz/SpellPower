@@ -42,6 +42,7 @@ public class SpellSchools {
 
     // Predefined Spell Schools
 
+    public static final SpellSchool GENERIC = register(createMagic("generic", 0x9999BB));
     public static final SpellSchool ARCANE = register(createMagic("arcane", 0xff66ff));
     public static final SpellSchool FIRE = register(createMagic("fire", 0xff3300));
     public static final SpellSchool FROST = register(createMagic("frost", 0xccffff));
