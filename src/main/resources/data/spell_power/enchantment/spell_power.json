@@ -1,5 +1,5 @@
 {
-  "anvil_cost": 5,
+  "anvil_cost": 1,
   "description": {
     "translate": "enchantment.spell_power.spell_power"
   },
@@ -18,17 +18,17 @@
     ]
   },
   "max_cost": {
-    "base": 3,
-    "per_level_above_first": 4
+    "base": 12,
+    "per_level_above_first": 11
   },
   "max_level": 5,
   "min_cost": {
-    "base": 2,
-    "per_level_above_first": 3
+    "base": 1,
+    "per_level_above_first": 11
   },
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#minecraft:acacia_logs",
-  "weight": 1
+  "supported_items": "#spell_power:enchantable/spell_power_generic",
+  "weight": 10
 }

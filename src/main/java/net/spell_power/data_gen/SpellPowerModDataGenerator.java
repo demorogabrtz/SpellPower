@@ -10,10 +10,12 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.enchantment.effect.AttributeEnchantmentEffect;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.item.Item;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
 import net.spell_power.api.SpellSchools;
@@ -37,30 +39,128 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
         @Override
         protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
             var spell_power = "spell_power";
-            var eid = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, spell_power));
 
-            Enchantment.Builder builder = Enchantment.builder(Enchantment.definition(
-                    registries.getWrapperOrThrow(RegistryKeys.ITEM).getOrThrow(ItemTags.ACACIA_LOGS),
-                    1, 5,
-                    Enchantment.leveledCost(2, 3),
-                    Enchantment.leveledCost(3, 4),
-                    5,
-                    AttributeModifierSlot.MAINHAND))
+
+            RegistryEntryLookup<Item> itemLookup = registries.createRegistryLookup().getOrThrow(RegistryKeys.ITEM);
+
+
+            var eid = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, spell_power));
+            Enchantment.Builder builder = Enchantment.builder(
+                    Enchantment.definition(
+                            itemLookup.getOrThrow(requirementTag("spell_power_generic")),
+                            10, 5,
+                            Enchantment.leveledCost(1, 11),
+                            Enchantment.leveledCost(12, 11),
+                    1,
+                            AttributeModifierSlot.MAINHAND)
+                    )
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
                                     Identifier.of(SpellPowerMod.ID, spell_power),
                                     SpellSchools.GENERIC.attributeEntry,
-                                    EnchantmentLevelBasedValue.linear(1),
+                                    EnchantmentLevelBasedValue.linear(0.05F),
                                     EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     );
-
             entries.add(eid, builder.build(eid.getValue()));
+
+
+            var specializedBonus = 0.03F;
+
+            var sunfireId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "sunfire"));
+            Enchantment.Builder sunfire = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("spell_power_sunfire")),
+                                    2, 5,
+                                    Enchantment.leveledCost(1, 11),
+                                    Enchantment.leveledCost(12, 11),
+                                    1,
+                                    AttributeModifierSlot.ARMOR)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "sunfire_enchantment"),
+                                    SpellSchools.ARCANE.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "sunfire_enchantment"),
+                                    SpellSchools.FIRE.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(sunfireId, sunfire.build(sunfireId.getValue()));
+
+            var soulfrostId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "soulfrost"));
+            Enchantment.Builder soulfrost = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("spell_power_soulfrost")),
+                                    2, 5,
+                                    Enchantment.leveledCost(1, 11),
+                                    Enchantment.leveledCost(12, 11),
+                                    1,
+                                    AttributeModifierSlot.ARMOR)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "soulfrost_enchantment"),
+                                    SpellSchools.SOUL.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "soulfrost_enchantment"),
+                                    SpellSchools.FROST.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(soulfrostId, soulfrost.build(soulfrostId.getValue()));
+
+
+            var energizeId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "energize"));
+            Enchantment.Builder energize = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("spell_power_energize")),
+                                    2, 5,
+                                    Enchantment.leveledCost(1, 11),
+                                    Enchantment.leveledCost(12, 11),
+                                    1,
+                                    AttributeModifierSlot.ARMOR)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "energize_enchantment"),
+                                    SpellSchools.HEALING.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "energize_enchantment"),
+                                    SpellSchools.LIGHTNING.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(specializedBonus),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(energizeId, energize.build(energizeId.getValue()));
+
+        }
+
+        private TagKey<Item> requirementTag(String name) {
+            return TagKey.of(RegistryKeys.ITEM, Identifier.of(SpellPowerMod.ID, "enchantable/" + name));
         }
 
         @Override
         public String getName() {
-            return "ench";
+            return "enchantments";
         }
     }
 }
