@@ -7,6 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.spell_power.api.*;
 import net.spell_power.config.AttributesConfig;
+import net.spell_power.internals.CrossFunctionalAttributes;
 import net.tinyconfig.ConfigManager;
 
 public class SpellPowerMod implements ModInitializer {

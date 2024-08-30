@@ -12,16 +12,16 @@ public class AttributesConfig {
     public AttributeScope attributes_container_injection_scope = AttributeScope.LIVING_ENTITY;
     public double base_spell_critical_chance_percentage = 5;
     public double base_spell_critical_damage_percentage = 50;
-    public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("446cf95e-be63-40d9-ad90-6cc388c08460", 0.1F);
+    public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config(0.1F);
     public Map<String, SpellStatusEffect.Config> secondary_effects;
     public float resistance_reduction_cap = 0.75F;
 
     public static AttributesConfig defaults() {
         var config = new AttributesConfig();
         config.secondary_effects = Map.of(
-                SpellPowerMechanics.CRITICAL_CHANCE.name, new SpellStatusEffect.Config("0e0ddd12-0646-42b7-8daf-36b4ccf524df", 0.05F),
-                SpellPowerMechanics.CRITICAL_DAMAGE.name, new SpellStatusEffect.Config("0612ed2a-3ce5-11ed-b878-0242ac120002", 0.1F),
-                SpellPowerMechanics.HASTE.name, new SpellStatusEffect.Config("092f4f58-3ce5-11ed-b878-0242ac120002", 0.05F)
+                SpellPowerMechanics.CRITICAL_CHANCE.name, new SpellStatusEffect.Config(0.05F),
+                SpellPowerMechanics.CRITICAL_DAMAGE.name, new SpellStatusEffect.Config(0.1F),
+                SpellPowerMechanics.HASTE.name, new SpellStatusEffect.Config(0.05F)
         );
         return config;
     }

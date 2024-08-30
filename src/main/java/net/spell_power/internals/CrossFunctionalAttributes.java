@@ -1,4 +1,4 @@
-package net.spell_power.api;
+package net.spell_power.internals;
 
 import com.google.common.collect.HashMultimap;
 import net.minecraft.entity.attribute.EntityAttribute;
