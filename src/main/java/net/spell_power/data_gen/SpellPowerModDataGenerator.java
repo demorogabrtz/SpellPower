@@ -9,15 +9,24 @@ import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.enchantment.effect.AttributeEnchantmentEffect;
+import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
+import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
+import net.minecraft.predicate.TagPredicate;
+import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EnchantmentTags;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.spell_power.SpellPowerMod;
+import net.spell_power.api.SpellPowerMechanics;
+import net.spell_power.api.SpellPowerTags;
 import net.spell_power.api.SpellSchools;
 
 import java.util.concurrent.CompletableFuture;
@@ -42,6 +51,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
 
 
             RegistryEntryLookup<Item> itemLookup = registries.createRegistryLookup().getOrThrow(RegistryKeys.ITEM);
+            RegistryEntryLookup<Enchantment> enchantmentLookup = registries.createRegistryLookup().getOrThrow(RegistryKeys.ENCHANTMENT);
 
 
             var eid = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, spell_power));
@@ -63,7 +73,6 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
                     );
             entries.add(eid, builder.build(eid.getValue()));
-
 
             var specializedBonus = 0.03F;
 
@@ -152,6 +161,90 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                     );
             entries.add(energizeId, energize.build(energizeId.getValue()));
 
+
+            var hasteId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "haste"));
+            Enchantment.Builder haste = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("haste")),
+                                    5, 5,
+                                    Enchantment.leveledCost(5, 12),
+                                    Enchantment.leveledCost(15, 15),
+                                    3,
+                                    AttributeModifierSlot.MAINHAND)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "enchantment"),
+                                    SpellPowerMechanics.HASTE.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(0.04F),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(hasteId, haste.build(hasteId.getValue()));
+
+            var critical_chanceId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "critical_chance"));
+            Enchantment.Builder critical_chance = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("critical_chance")),
+                                    4, 5,
+                                    Enchantment.leveledCost(5, 12),
+                                    Enchantment.leveledCost(15, 15),
+                                    3,
+                                    AttributeModifierSlot.ARMOR)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "enchantment"),
+                                    SpellPowerMechanics.CRITICAL_CHANCE.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(0.02F),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(critical_chanceId, critical_chance.build(critical_chanceId.getValue()));
+
+            var critical_damageId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "critical_damage"));
+            Enchantment.Builder critical_damage = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(requirementTag("critical_damage")),
+                                    4, 5,
+                                    Enchantment.leveledCost(5, 12),
+                                    Enchantment.leveledCost(15, 15),
+                                    3,
+                                    AttributeModifierSlot.ARMOR)
+                    )
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.ATTRIBUTES,
+                            new AttributeEnchantmentEffect(
+                                    Identifier.of(SpellPowerMod.ID, "enchantment"),
+                                    SpellPowerMechanics.CRITICAL_DAMAGE.attributeEntry,
+                                    EnchantmentLevelBasedValue.linear(0.05F),
+                                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+                    );
+            entries.add(critical_damageId, critical_damage.build(critical_damageId.getValue()));
+
+            var protectionId = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "magic_protection"));
+            Enchantment.Builder protection = Enchantment.builder(
+                            Enchantment.definition(
+                                    itemLookup.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                    5,
+                                    4,
+                                    Enchantment.leveledCost(3, 6),
+                                    Enchantment.leveledCost(9, 6),
+                                    2,
+                                    AttributeModifierSlot.ARMOR
+                            )
+                    )
+                    .exclusiveSet(enchantmentLookup.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE_SET))
+                    .addEffect(
+                            EnchantmentEffectComponentTypes.DAMAGE_PROTECTION,
+                            new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2.0F)),
+                            DamageSourcePropertiesLootCondition.builder(
+                                    DamageSourcePredicate.Builder.create()
+                                            .tag(TagPredicate.expected(SpellPowerTags.DamageType.ALL))
+                                            .tag(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY))
+                            )
+                    );
+            entries.add(protectionId, protection.build(protectionId.getValue()));
         }
 
         private TagKey<Item> requirementTag(String name) {
