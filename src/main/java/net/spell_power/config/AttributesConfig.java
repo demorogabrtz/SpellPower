@@ -12,7 +12,6 @@ public class AttributesConfig {
     public AttributeScope attributes_container_injection_scope = AttributeScope.LIVING_ENTITY;
     public double base_spell_critical_chance_percentage = 5;
     public double base_spell_critical_damage_percentage = 50;
-    public int status_effect_raw_id_starts_at = 730;
     public SpellStatusEffect.Config spell_power_effect = new SpellStatusEffect.Config("446cf95e-be63-40d9-ad90-6cc388c08460", 0.1F);
     public Map<String, SpellStatusEffect.Config> secondary_effects;
     public float resistance_reduction_cap = 0.75F;

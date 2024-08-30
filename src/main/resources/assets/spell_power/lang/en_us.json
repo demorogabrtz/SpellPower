@@ -17,9 +17,9 @@
   "attribute.name.spell_power.critical_chance" : "Spell Critical Chance",
   "attribute.name.spell_power.critical_damage" : "Spell Critical Damage",
   "attribute.name.spell_power.haste" : "Spell Haste",
-
   "attribute.name.spell_power.resistance.generic" : "Spell Resistance",
 
+  "effect.spell_power.generic": "Spell Power",
   "effect.spell_power.arcane": "Arcane Power",
   "effect.spell_power.fire": "Fire Power",
   "effect.spell_power.frost": "Frost Power",

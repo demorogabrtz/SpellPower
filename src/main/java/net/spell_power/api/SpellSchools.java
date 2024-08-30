@@ -62,12 +62,7 @@ public class SpellSchools {
         var translationPrefix = "attribute.name." + id.getNamespace() + ".";
         var attribute = new CustomEntityAttribute(translationPrefix + id.getPath(), 0, 0, 2048, id).setTracked(true);
 
-        return createMagic(id, color, attribute, powerEffect);
-    }
-
-    @Deprecated
-    public static SpellSchool createMagic(Identifier id, int color, EntityAttribute powerAttribute, StatusEffect powerEffect) {
-        return createMagic(id, color, true, powerAttribute, powerEffect);
+        return createMagic(id, color, true, attribute, powerEffect);
     }
 
     public static SpellSchool createMagic(Identifier id, int color, boolean customDamageType, EntityAttribute powerAttribute, StatusEffect powerEffect) {

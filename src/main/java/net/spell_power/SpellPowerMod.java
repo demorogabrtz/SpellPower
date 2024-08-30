@@ -4,9 +4,9 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 import net.spell_power.api.*;
 import net.spell_power.config.AttributesConfig;
-import net.spell_power.config.EnchantmentsConfig;
 import net.tinyconfig.ConfigManager;
 
 public class SpellPowerMod implements ModInitializer {
@@ -20,40 +20,11 @@ public class SpellPowerMod implements ModInitializer {
             .validate(AttributesConfig::isValid)
             .build();
 
-    public static final ConfigManager<EnchantmentsConfig> enchantmentConfig = new ConfigManager<EnchantmentsConfig>
-            ("enchantments", new EnchantmentsConfig())
-            .builder()
-            .setDirectory(ID)
-            .sanitize(true)
-            .schemaVersion(4)
-            .build();
-
     private static int effectRawId = 730;
 
     @Override
     public void onInitialize() {
         attributesConfig.refresh();
-        enchantmentConfig.refresh();
-        effectRawId = attributesConfig.value.status_effect_raw_id_starts_at;
-
-        for(var entry: SpellPowerMechanics.all.entrySet()) {
-            var secondary = entry.getValue();
-            var id = secondary.id;
-
-            var uuid = "0e0ddd12-0646-42b7-8daf-36b4ccf524df";
-            var bonus_per_stack = 0.1F;
-            var config = attributesConfig.value.secondary_effects.get(secondary.name);
-            if (config != null) {
-                uuid = config.uuid;
-                bonus_per_stack = config.bonus_per_stack;
-            }
-//            secondary.boostEffect.addAttributeModifier(
-//                    secondary.attribute,
-//                    uuid,
-//                    bonus_per_stack,
-//                    EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-//            Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), secondary.boostEffect);
-        }
     }
 
     /**
@@ -77,23 +48,39 @@ public class SpellPowerMod implements ModInitializer {
     }
 
     /**
-     * For internal use on ly!
+     * For internal use only!
      */
     public static void registerStatusEffects() {
-//        for(var school: SpellSchools.all()) {
-//            var id = school.id;
-//            if (school.powerEffectManagement.isInternal()) {
-//                if (school.boostEffect != null && Registries.STATUS_EFFECT.get(id) == null) {
-//                    var config = attributesConfig.value.spell_power_effect;
-//                    school.boostEffect.addAttributeModifier(
-//                            school.attribute,
-//                            config.uuid,
-//                            config.bonus_per_stack,
-//                            EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-//                    Registry.register(Registries.STATUS_EFFECT, effectRawId++, id.toString(), school.boostEffect);
-//                }
-//            }
-//        }
+        var modifierId = Identifier.of(ID, "potion_effect");
+        var bonus_per_stack = 0.1F;
+        for(var school: SpellSchools.all()) {
+            var id = school.id;
+            if (school.ownedBoostEffect != null && school.attributeEntry != null) {
+                school.ownedBoostEffect.addAttributeModifier(
+                        school.attributeEntry,
+                        modifierId,
+                        bonus_per_stack,
+                        EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+
+                Registry.register(Registries.STATUS_EFFECT, id.toString(), school.ownedBoostEffect);
+            }
+        }
+
+        for(var entry: SpellPowerMechanics.all.entrySet()) {
+            var secondary = entry.getValue();
+            var id = secondary.id;
+
+            var config = attributesConfig.value.secondary_effects.get(secondary.name);
+            if (config != null) {
+                bonus_per_stack = config.bonus_per_stack;
+            }
+            secondary.boostEffect.addAttributeModifier(
+                    secondary.attributeEntry,
+                    modifierId,
+                    bonus_per_stack,
+                    EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            Registry.register(Registries.STATUS_EFFECT, id.toString(), secondary.boostEffect);
+        }
     }
 
     public static AttributesConfig.AttributeScope attributeScopeOverride = null;
