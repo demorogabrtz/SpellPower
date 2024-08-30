@@ -21,8 +21,6 @@ public class SpellPowerMod implements ModInitializer {
             .validate(AttributesConfig::isValid)
             .build();
 
-    private static int effectRawId = 730;
-
     @Override
     public void onInitialize() {
         attributesConfig.refresh();

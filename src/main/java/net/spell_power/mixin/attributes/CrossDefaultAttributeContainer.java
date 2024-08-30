@@ -18,41 +18,6 @@ public class CrossDefaultAttributeContainer implements CrossFunctionalAttributes
     // Inject to init tail
 
     @Shadow @Final private Map<RegistryEntry<EntityAttribute>, EntityAttributeInstance> instances;
-//
-//    @Inject(method = "<init>", at = @At("TAIL"))
-//    private void init_Tail(Map par_instances, CallbackInfo ci) {
-//        for(var entry: instances.entrySet()) {
-//            var instance = entry.getValue();
-//            ((CrossFunctionalAttributes.Provider)instance).setProxy(this);
-//        }
-//    }
-
-//    @Inject(method = "getValue", at = @At("HEAD"), cancellable = true)
-//    private void getValue_UpdateOthers(RegistryEntry<EntityAttribute> attribute, CallbackInfoReturnable<Double> cir) {
-//        for(var entry: instances.entrySet()) {
-//            var instance = entry.getValue();
-//            ((CrossFunctionalAttributes.Provider)instance).setProxy(this) ;
-//        }
-//    }
-
-//    @Override
-//    public void connect() {
-//        System.out.println("CrossDefaultAttributeContainer.connect " + instances.size());
-//        for(var entry: instances.entrySet()) {
-//            var instance = entry.getValue();
-//            ((CrossFunctionalAttributes.Provider)instance).setProxy(this);
-//        }
-//    }
-//
-//    @Override
-//    public List<CrossFunctionalAttributes.Provider> getCrossProvidersForPowered(RegistryEntry<EntityAttribute> attribute) {
-//        var crossAttributes = CrossFunctionalAttributes.getPowered(attribute);
-//        return crossAttributes.stream()
-//                .map(instances::get)
-//                .map(instance -> (CrossFunctionalAttributes.Provider)instance)
-//                .toList();
-//    }
-
 
     @Nullable private CrossFunctionalAttributes.Proxy proxy;
 
