@@ -1,3 +1,8 @@
+# 1.0.2
+
+- Restore school filtering for specialised enchantments
+- School specific enchantments are now exclusive to each other
+
 # 1.0.1
 
 - Update to Minecraft 1.21.1

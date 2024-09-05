@@ -27,6 +27,7 @@
       }
     ]
   },
+  "exclusive_set": "#spell_power:school_filtered",
   "max_cost": {
     "base": 12,
     "per_level_above_first": 11

@@ -86,6 +86,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
@@ -114,6 +115,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
@@ -143,6 +145,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
@@ -240,7 +243,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                             new AddEnchantmentEffect(EnchantmentLevelBasedValue.linear(2.0F)),
                             DamageSourcePropertiesLootCondition.builder(
                                     DamageSourcePredicate.Builder.create()
-                                            .tag(TagPredicate.expected(SpellPowerTags.DamageType.ALL))
+                                            .tag(TagPredicate.expected(SpellPowerTags.DamageTypes.ALL))
                                             .tag(TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY))
                             )
                     );
