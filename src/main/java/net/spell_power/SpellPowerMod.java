@@ -56,20 +56,18 @@ public class SpellPowerMod implements ModInitializer {
         }
 
         EnchantmentEvents.ALLOW_ENCHANTING.register((enchantment, target, enchantingContext) -> {
-            if (enchantment.isIn(SpellPowerTags.Enchantments.SCHOOL_FILTERED))  {
-                System.out.println("Spell Power - School Filtering check: " + enchantment);
+            if (enchantment.isIn(SpellPowerTags.Enchantments.REQUIRES_MATCHING_ATTRIBUTE))  {
+                // System.out.println("Spell Power - School Filtering check: " + enchantment);
                 var enchantmentAttributes = enchantment.value().effects().get(EnchantmentEffectComponentTypes.ATTRIBUTES);
-
-
                 if (enchantmentAttributes != null && !enchantmentAttributes.isEmpty()) {
                     var itemAttributes = target.getComponents().get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
                     if (itemAttributes.modifiers().isEmpty()) {
                         itemAttributes = target.getItem().getAttributeModifiers();
                     }
-                    System.out.println("Spell Power - School Filtering | enchantmentAttributes: " + enchantmentAttributes + " | itemAttributes: " + itemAttributes);
+                    // System.out.println("Spell Power - School Filtering | enchantmentAttributes: " + enchantmentAttributes + " | itemAttributes: " + itemAttributes);
 
                     var intersect = AttributeUtil.attributesIntersect(enchantmentAttributes, itemAttributes);
-                    System.out.println("Spell Power - Intersect: " + intersect + " | " + enchantmentAttributes + " | " + itemAttributes);
+                    // System.out.println("Spell Power - Intersect: " + intersect + " | " + enchantmentAttributes + " | " + itemAttributes);
                     if (!intersect) {
                         return TriState.FALSE;
                     }

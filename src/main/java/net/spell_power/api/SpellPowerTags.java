@@ -12,6 +12,7 @@ public class SpellPowerTags {
         public static final TagKey<DamageType> ALL = TagKey.of(RegistryKeys.DAMAGE_TYPE, Identifier.of(SpellPowerMod.ID, "all"));
     }
     public static class Enchantments {
-        public static final TagKey<Enchantment> SCHOOL_FILTERED = TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "school_filtered"));
+        public static final TagKey<Enchantment> REQUIRES_MATCHING_ATTRIBUTE = TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "requires_matching_attribute"));
+        public static final TagKey<Enchantment> MULTI_SCHOOL = TagKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(SpellPowerMod.ID, "multi_school"));
     }
 }

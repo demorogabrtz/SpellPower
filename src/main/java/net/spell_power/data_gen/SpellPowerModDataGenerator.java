@@ -86,7 +86,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
-                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.MULTI_SCHOOL))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
@@ -115,7 +115,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
-                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.MULTI_SCHOOL))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
@@ -145,7 +145,7 @@ public class SpellPowerModDataGenerator implements DataGeneratorEntrypoint {
                                     1,
                                     AttributeModifierSlot.ARMOR)
                     )
-                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.SCHOOL_FILTERED))
+                    .exclusiveSet(enchantmentLookup.getOrThrow(SpellPowerTags.Enchantments.MULTI_SCHOOL))
                     .addEffect(
                             EnchantmentEffectComponentTypes.ATTRIBUTES,
                             new AttributeEnchantmentEffect(
