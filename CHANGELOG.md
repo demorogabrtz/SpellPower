@@ -1,3 +1,7 @@
+# 1.0.4
+
+- Lower Fabric API version requirement
+
 # 1.0.3
 
 - Fix cross-functional attribute calculations (reverse updates)
