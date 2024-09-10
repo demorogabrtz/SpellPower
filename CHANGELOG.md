@@ -1,3 +1,8 @@
+# 1.0.3
+
+- Fix cross-functional attribute calculations (reverse updates)
+- Update dependency declarations
+
 # 1.0.2
 
 - Restore school filtering for specialised enchantments
