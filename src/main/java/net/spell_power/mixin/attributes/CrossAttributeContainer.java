@@ -1,9 +1,7 @@
 package net.spell_power.mixin.attributes;
 
-import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
+import com.google.common.collect.Multimap;
+import net.minecraft.entity.attribute.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.spell_power.internals.CrossFunctionalAttributes;
 import org.spongepowered.asm.mixin.Final;
@@ -40,6 +38,15 @@ public class CrossAttributeContainer
         }
     }
 
+    @Inject(method = "addTemporaryModifiers", at = @At("TAIL"))
+    private void addTemporaryModifiers_Head(Multimap<RegistryEntry<EntityAttribute>, EntityAttributeModifier> modifiersMap, CallbackInfo ci) {
+        for (var entry: modifiersMap.entries()) {
+            var instance = custom.get(entry.getKey());
+            var attribute = instance.getAttribute();
+            this.updateProvidersPoweredBy(attribute);
+        }
+    }
+
     // @Override
     private void connect() {
         for(var entry: custom.entrySet()) {
@@ -50,8 +57,38 @@ public class CrossAttributeContainer
     }
 
     @Override
-    public List<CrossFunctionalAttributes.Provider> getCrossProvidersForPowered(RegistryEntry<EntityAttribute> attribute) {
-        var crossAttributes = CrossFunctionalAttributes.getPowered(attribute);
+    public void updateProvidersPowering(RegistryEntry<EntityAttribute> attribute) {
+        for (var provider: getCrossProvidersPowering(attribute)) {
+            provider.updateIfNecessaryForCross();
+        }
+    }
+
+    @Override
+    public void updateProvidersPoweredBy(RegistryEntry<EntityAttribute> attribute) {
+        for (var provider: getCrossProvidersPoweredBy(attribute)) {
+            provider.setDirtyForCross();
+            provider.updateIfNecessaryForCross();
+        }
+    }
+
+    @Override
+    public List<CrossFunctionalAttributes.Provider> getCrossProvidersPowering(RegistryEntry<EntityAttribute> attribute) {
+        var crossAttributes = CrossFunctionalAttributes.getPoweringOf(attribute);
+        return crossAttributes.stream()
+                .map(crossAttribute -> {
+                    var instance = custom.get(crossAttribute);
+                    if (instance == null) {
+                        instance = ((CrossFunctionalAttributes.Fallback)fallback).getAttributeInstances().get(crossAttribute);
+                    }
+                    return instance;
+                })
+                .map(instance -> (CrossFunctionalAttributes.Provider)instance)
+                .toList();
+    }
+
+    @Override
+    public List<CrossFunctionalAttributes.Provider> getCrossProvidersPoweredBy(RegistryEntry<EntityAttribute> attribute) {
+        var crossAttributes = CrossFunctionalAttributes.getPoweredBy(attribute);
         return crossAttributes.stream()
                 .map(crossAttribute -> {
                     var instance = custom.get(crossAttribute);

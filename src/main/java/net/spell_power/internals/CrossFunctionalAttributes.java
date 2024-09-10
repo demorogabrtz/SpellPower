@@ -18,17 +18,37 @@ public class CrossFunctionalAttributes {
      * - value: by what other attributes
      */
     private static final HashMultimap<RegistryEntry<EntityAttribute>, RegistryEntry<EntityAttribute>> cross = HashMultimap.create();
+    /**
+     * Register of reverse cross-functional attributes.
+     * - key: what is powering
+     * - value: what is powered
+     */
+    private static final HashMultimap<RegistryEntry<EntityAttribute>, RegistryEntry<EntityAttribute>> reverse = HashMultimap.create();
 
-    public static void power(RegistryEntry<EntityAttribute> key, RegistryEntry<EntityAttribute> value) {
-        cross.put(key, value);
+    public static void power(RegistryEntry<EntityAttribute> powered, RegistryEntry<EntityAttribute> by) {
+        cross.put(powered, by);
+        reverse.put(by, powered);
     }
 
-    public static Set<RegistryEntry<EntityAttribute>> getPowered(RegistryEntry<EntityAttribute> key) {
-        return cross.get(key);
+    /**
+     * Returns what attributes power the given attribute.
+     */
+    public static Set<RegistryEntry<EntityAttribute>> getPoweringOf(RegistryEntry<EntityAttribute> attribute) {
+        return cross.get(attribute);
+    }
+
+    /**
+     * Returns what attributes are powered by the given attribute.
+     */
+    public static Set<RegistryEntry<EntityAttribute>> getPoweredBy(RegistryEntry<EntityAttribute> attribute) {
+        return reverse.get(attribute);
     }
 
     public interface Proxy {
-        List<Provider> getCrossProvidersForPowered(RegistryEntry<EntityAttribute> attribute);
+        void updateProvidersPowering(RegistryEntry<EntityAttribute> attribute);
+        void updateProvidersPoweredBy(RegistryEntry<EntityAttribute> attribute);
+        List<Provider> getCrossProvidersPowering(RegistryEntry<EntityAttribute> attribute);
+        List<Provider> getCrossProvidersPoweredBy(RegistryEntry<EntityAttribute> attribute);
     }
 
     public interface Fallback {
@@ -38,6 +58,7 @@ public class CrossFunctionalAttributes {
 
     public interface Provider {
         void setProxy(Proxy proxy);
+        void setDirtyForCross();
         void updateIfNecessaryForCross();
         Collection<EntityAttributeModifier> getModifiersByOperation_Cross(EntityAttributeModifier.Operation operation);
     }
