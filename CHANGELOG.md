@@ -1,3 +1,7 @@
+# 1.0.5
+
+- Fix spell vulnerability status effects
+
 # 1.0.4
 
 - Lower Fabric API version requirement

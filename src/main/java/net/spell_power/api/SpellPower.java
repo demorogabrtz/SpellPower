@@ -53,7 +53,7 @@ public class SpellPower {
                     (query -> {
                         var vulnerabilities = new ArrayList<Vulnerability>();
                         for(var effect: query.entity.getStatusEffects()) {
-                            if (effect.getEffectType() instanceof VulnerabilityEffect vulnerabilityEffect) {
+                            if (effect.getEffectType().value() instanceof VulnerabilityEffect vulnerabilityEffect) {
                                 vulnerabilities.add(vulnerabilityEffect.getVulnerability(query.school, effect.getAmplifier()));
                             }
                         }
